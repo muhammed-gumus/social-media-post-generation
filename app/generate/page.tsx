@@ -8,7 +8,6 @@ import {
   generateContent,
   saveContentResult,
   ContentGenerationParams,
-  ContentResult,
 } from "@/lib/services/contentService";
 import {
   getPlatformName,
@@ -27,7 +26,6 @@ import {
   AppError,
   ErrorType,
 } from "@/lib/services/errorService";
-import { generateContentPlaceholder } from "@/lib/wizardConfig";
 
 export default function GeneratePage() {
   const searchParams = useSearchParams();
@@ -63,22 +61,8 @@ export default function GeneratePage() {
 
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("Hazırlanıyor...");
-  const [result, setResult] = useState<ContentResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
-
-  const statusMessages = [
-    "Parametreler analiz ediliyor...",
-    "İçerik stratejisi belirleniyor...",
-    "Hedef kitle analizi yapılıyor...",
-    "Sektör özelliklerine göre içerik hazırlanıyor...",
-    "AI modeli hazırlanıyor...",
-    "Metin içeriği üretiliyor...",
-    "Görsel üretiliyor...",
-    "İçerik optimize ediliyor...",
-    "Platform özelliklerine göre düzenleniyor...",
-    "Son düzenlemeler yapılıyor...",
-  ];
 
   // Function to update status and progress
   const updateProgress = (statusMessage: string, progressValue: number) => {
@@ -87,6 +71,19 @@ export default function GeneratePage() {
   };
 
   useEffect(() => {
+    const statusMessages = [
+      "Parametreler analiz ediliyor...",
+      "İçerik stratejisi belirleniyor...",
+      "Hedef kitle analizi yapılıyor...",
+      "Sektör özelliklerine göre içerik hazırlanıyor...",
+      "AI modeli hazırlanıyor...",
+      "Metin içeriği üretiliyor...",
+      "Görsel üretiliyor...",
+      "İçerik optimize ediliyor...",
+      "Platform özelliklerine göre düzenleniyor...",
+      "Son düzenlemeler yapılıyor...",
+    ];
+
     // Validate required parameters
     try {
       validateRequiredParams({ platform, contentType, audience, description }, [
@@ -174,7 +171,6 @@ export default function GeneratePage() {
         }
 
         setProgress(100);
-        setResult(contentResult);
 
         // Track successful generation
         trackContentGeneration(platform, contentType, true);

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface InstagramMockupProps {
   content: {
@@ -23,10 +24,12 @@ export function InstagramMockup({
           {/* Story content */}
           {content.imageUrl && content.imageUrl !== "/file.svg" ? (
             <div className="absolute inset-0">
-              <img
+              <Image
                 src={content.imageUrl}
                 alt="Story image"
                 className="w-full h-full object-cover"
+                width={500}
+                height={800}
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/file.svg";
                 }}
@@ -105,10 +108,12 @@ export function InstagramMockup({
       {/* Image */}
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
         {content.imageUrl && content.imageUrl !== "/file.svg" ? (
-          <img
+          <Image
             src={content.imageUrl}
             alt="Instagram post"
             className="w-full h-full object-cover"
+            width={500}
+            height={500}
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/file.svg";
             }}

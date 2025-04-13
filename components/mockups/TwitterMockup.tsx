@@ -36,10 +36,12 @@ export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
       <div className="flex items-center p-4 border-b border-gray-100">
         {profileInfo?.photoUrl ? (
           <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0">
-            <img
+            <Image
               src={profileInfo.photoUrl}
               alt="Profil fotoğrafı"
               className="w-full h-full object-cover"
+              width={40}
+              height={40}
               onError={(e) => {
                 (
                   e.target as HTMLImageElement
@@ -87,10 +89,12 @@ export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
         {/* Image */}
         {content.imageUrl && content.imageUrl !== "/file.svg" && (
           <div className="mt-3 rounded-xl overflow-hidden">
-            <img
+            <Image
               src={content.imageUrl}
               alt="Tweet image"
               className="w-full h-auto object-cover"
+              width={500}
+              height={500}
               onError={(e) => {
                 (e.target as HTMLImageElement).src = "/file.svg";
               }}
@@ -124,7 +128,7 @@ export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1-2 2z"></path>
           </svg>
         </div>
         <div className="p-2 rounded-full hover:bg-green-50 hover:text-green-600 cursor-pointer">

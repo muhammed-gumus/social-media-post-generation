@@ -250,11 +250,9 @@ export async function generateImage(prompt: string): Promise<string> {
 
       console.warn("API yanıtında görsel bulunamadı.");
       return "/file.svg";
-    } catch (apiError: any) {
-      console.error("Gemini API hatası:", apiError.message || apiError);
-      if (apiError.response) {
-        console.error("API yanıt detayları:", apiError.response);
-      }
+    } catch (apiError: unknown) {
+      const error = apiError as Error;
+      console.error("Gemini API hatası:", error.message || error);
       return "/file.svg";
     }
   } catch (error) {

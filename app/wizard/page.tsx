@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -195,11 +195,25 @@ function WizardContent() {
   );
 }
 
+// Loading fallback component for Suspense
+function WizardLoading() {
+  return (
+    <div className="container max-w-4xl mx-auto py-12 px-4">
+      <div className="h-4 w-full bg-gray-200 rounded mb-8"></div>
+      <div className="w-full h-96 bg-gray-100 rounded flex items-center justify-center">
+        <p>Yükleniyor...</p>
+      </div>
+    </div>
+  );
+}
+
 // Wrapper component that provides the wizard context
 export default function WizardPage() {
   return (
     <WizardProvider>
-      <WizardContent />
+      <Suspense fallback={<WizardLoading />}>
+        <WizardContent />
+      </Suspense>
     </WizardProvider>
   );
 }

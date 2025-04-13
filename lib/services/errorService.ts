@@ -28,10 +28,14 @@ export enum ErrorType {
 // Custom error class
 export class AppError extends Error {
   type: ErrorType;
-  details: any;
+  details: Record<string, unknown>;
   timestamp: string;
 
-  constructor(type: ErrorType, message: string, details?: any) {
+  constructor(
+    type: ErrorType,
+    message: string,
+    details?: Record<string, unknown>
+  ) {
     super(message);
     this.name = "AppError";
     this.type = type;
@@ -135,7 +139,7 @@ export function handleContentGenerationError(
 
 // Validate required parameters
 export function validateRequiredParams(
-  params: Record<string, any>,
+  params: Record<string, unknown>,
   requiredKeys: string[]
 ): void {
   const missingParams = requiredKeys.filter((key) => !params[key]);

@@ -1,34 +1,5 @@
 // Google'ın Gemini 2.0 Flash API'si için yardımcı fonksiyonlar
 
-interface GeminiRequest {
-  model: string;
-  contents: {
-    parts: {
-      text: string;
-    }[];
-    role: string;
-  }[];
-  generationConfig: {
-    temperature: number;
-    topK: number;
-    topP: number;
-    maxOutputTokens: number;
-    stopSequences?: string[];
-  };
-}
-
-interface GeminiResponse {
-  candidates: {
-    content: {
-      parts: {
-        text: string;
-      }[];
-    };
-    finishReason: string;
-  }[];
-  promptFeedback?: any;
-}
-
 /**
  * Dil kodunu tam dil adına dönüştürür
  * @param languageCode Dil kodu (tr, en, de, vb.)
@@ -47,6 +18,11 @@ function getLanguageName(languageCode: string): string {
     zh: "Çince (中文)",
   };
   return languageNames[languageCode] || languageCode;
+}
+
+// Define type for Gemini API response parts
+interface GeminiResponsePart {
+  text?: string;
 }
 
 /**
@@ -106,7 +82,7 @@ export async function generateText(prompt: string): Promise<string> {
 
       if (data?.candidates?.[0]?.content?.parts) {
         const text = data.candidates[0].content.parts
-          .map((part: any) => part.text || "")
+          .map((part: GeminiResponsePart) => part.text || "")
           .join("");
         return text || "İçerik üretilemedi.";
       } else {

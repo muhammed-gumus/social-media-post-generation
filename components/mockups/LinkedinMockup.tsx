@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface LinkedinMockupProps {
   content: {
@@ -66,7 +67,7 @@ export function LinkedinMockup({ content, contentType }: LinkedinMockupProps) {
       {/* Image */}
       {content.imageUrl && content.imageUrl !== "/file.svg" && (
         <div className="mt-2 border-t border-gray-100">
-          <img
+          <Image
             src={content.imageUrl}
             alt="LinkedIn post"
             className={`w-full h-auto object-cover ${
@@ -75,6 +76,8 @@ export function LinkedinMockup({ content, contentType }: LinkedinMockupProps) {
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/file.svg";
             }}
+            width={500}
+            height={500}
           />
         </div>
       )}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useWizard } from "../wizardContext";
-import Link from "next/link";
 
 export default function ProfileInfoStep() {
   const { state, setState } = useWizard();
@@ -71,7 +70,7 @@ export default function ProfileInfoStep() {
               }
             />
             <p className="text-xs text-gray-500 mt-1">
-              Bir görsel URL'si girmezseniz, varsayılan bir avatar
+              Bir görsel URL&apos;si girmezseniz, varsayılan bir avatar
               kullanılacaktır.
             </p>
           </div>

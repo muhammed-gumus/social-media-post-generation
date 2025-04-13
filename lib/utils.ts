@@ -264,14 +264,12 @@ function audienceInstructions(audience: string): string {
  * @param platform - Sosyal medya platformu
  * @param text - Paylaşılacak metin
  * @param title - İçerik başlığı (varsa)
- * @param imageUrl - Görsel URL'i (varsa)
  * @returns - Paylaşım URL'i
  */
 export function getSharingUrl(
   platform: string,
   text: string,
-  title?: string,
-  imageUrl?: string
+  title?: string
 ): string {
   // Metin içeriğini kısalt (LinkedIn için özellikle gerekli)
   const truncateText = (text: string, maxLength: number): string => {
@@ -295,8 +293,6 @@ export function getSharingUrl(
   const encodedTitle = title
     ? encodeURIComponent(truncateText(title, 100))
     : "";
-  const encodedImageUrl =
-    imageUrl && imageUrl !== "/file.svg" ? encodeURIComponent(imageUrl) : "";
   const dummyUrl = encodeURIComponent("https://example.com/content");
 
   switch (platform) {

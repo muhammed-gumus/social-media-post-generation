@@ -53,7 +53,12 @@ export interface ContentResult {
     contentLength?: string;
     audienceCategory?: string;
     language?: string;
-    platformSpecificSettings?: any;
+    platformSpecificSettings?: {
+      filter?: string;
+      charLimit?: string;
+      privacy?: string;
+      [key: string]: string | undefined;
+    };
   };
 }
 
@@ -69,9 +74,7 @@ export async function generateContent(
     contentType,
     audience,
     audienceCategory,
-    tone,
     description,
-    keywords = "",
     purpose = "engagement",
     industry = "",
     contentLength = "medium",

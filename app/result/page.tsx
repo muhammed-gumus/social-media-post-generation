@@ -16,8 +16,6 @@ import Link from "next/link";
 import {
   getPlatformName,
   getContentTypeName,
-  getAudienceName,
-  getToneName,
   getSharingUrl,
 } from "@/lib/utils";
 import { generateSocialMediaImage } from "@/lib/imagen";
@@ -102,7 +100,7 @@ export default function ResultPage() {
   const platform = searchParams.get("platform") || "";
   const contentType = searchParams.get("contentType") || "";
   const audience = searchParams.get("audience") || "";
-  const tone = searchParams.get("tone") || "informative";
+  // The tone variable is kept for future feature implementation
 
   const [result, setResult] = useState<ContentResult>({
     title: "",
@@ -356,12 +354,7 @@ export default function ResultPage() {
         });
     } else {
       // Diğer platformlar için normal paylaşım işlemi
-      const shareUrl = getSharingUrl(
-        platform,
-        textToShare,
-        result.title,
-        result.imageUrl
-      );
+      const shareUrl = getSharingUrl(platform, textToShare, result.title);
 
       if (shareUrl) {
         window.open(shareUrl, "_blank");
@@ -371,12 +364,7 @@ export default function ResultPage() {
 
   // LinkedIn paylaşımı tamamlama
   const handleLinkedInShareConfirm = () => {
-    const shareUrl = getSharingUrl(
-      "linkedin",
-      "",
-      result.title,
-      result.imageUrl
-    );
+    const shareUrl = getSharingUrl("linkedin", "", result.title);
     window.open(shareUrl, "_blank");
     setIsLinkedInShareModalOpen(false);
   };
@@ -484,10 +472,11 @@ export default function ResultPage() {
       >
         <div className="space-y-3">
           <p>
-            LinkedIn içeriğiniz kopyalandı! İçeriği LinkedIn'de paylaşmak için:
+            LinkedIn içeriğiniz kopyalandı! İçeriği LinkedIn&apos;de paylaşmak
+            için:
           </p>
           <ol className="list-decimal list-inside space-y-1 text-sm">
-            <li>LinkedIn'e Git butonuna tıklayın</li>
+            <li>LinkedIn&apos;e Git butonuna tıklayın</li>
             <li>LinkedIn paylaşım sayfasında, içerik alanına tıklayın</li>
             <li>Ctrl+V (veya Command+V) ile kopyalanan içeriği yapıştırın</li>
             <li>Paylaş butonuna tıklayın</li>
@@ -532,8 +521,8 @@ export default function ResultPage() {
         <div className="space-y-2">
           <p>İçeriği kopyalarken bir hata oluştu.</p>
           <p>
-            Lütfen "Metni Kopyala" butonunu kullanarak içeriği manuel olarak
-            kopyalayıp, paylaşmak istediğiniz platformda yapıştırın.
+            Lütfen &quot;Metni Kopyala&quot; butonunu kullanarak içeriği manuel
+            olarak kopyalayıp, paylaşmak istediğiniz platformda yapıştırın.
           </p>
         </div>
       </Modal>

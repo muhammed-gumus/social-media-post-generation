@@ -450,8 +450,16 @@ interface WizardContextValue {
   // Data accessors
   getPlatforms: () => typeof platforms;
   getLanguages: () => typeof languages;
-  getContentTypeOptions: () => any[];
-  getAudienceOptions: () => any[];
+  getContentTypeOptions: () => {
+    id: string;
+    name: string;
+    description: string;
+  }[];
+  getAudienceOptions: () => {
+    id: string;
+    name: string;
+    description: string;
+  }[];
   getIndustries: () => typeof industries;
   getContentTones: () => typeof contentTones;
   getContentPurposes: () => typeof contentPurposes;
@@ -827,7 +835,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
 
     // Sort based on industry and platform
     if (state.selectedIndustry) {
-      return [...baseOptions].sort((a, b) => {
+      return [...baseOptions].sort((a) => {
         // Industry-specific prioritization
         if (
           state.selectedIndustry === "finance" &&

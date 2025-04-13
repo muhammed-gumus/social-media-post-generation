@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface FacebookMockupProps {
   content: {
@@ -81,10 +82,12 @@ export function FacebookMockup({ content, contentType }: FacebookMockupProps) {
       {/* Image */}
       {content.imageUrl && content.imageUrl !== "/file.svg" && (
         <div className="border-t border-b border-gray-100">
-          <img
+          <Image
             src={content.imageUrl}
             alt="Facebook post"
             className="w-full h-auto object-cover max-h-96"
+            width={500}
+            height={500}
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/file.svg";
             }}
