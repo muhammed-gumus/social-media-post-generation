@@ -148,38 +148,49 @@ function WizardContent() {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto py-12 px-4">
-      <Progress value={state.progress} className="mb-8" />
+    <div className="container max-w-4xl mx-auto py-8 sm:py-12 px-4">
+      <Progress value={state.progress} className="mb-6 sm:mb-8" />
 
       <Card className="w-full">
-        <CardHeader>
-          <CardTitle>
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="text-xl sm:text-2xl">
             {editMode
               ? "İçerik Düzenleme"
               : "Gelişmiş İçerik Oluşturma Sihirbazı"}
           </CardTitle>
-          <CardDescription>{getStepTitle()}</CardDescription>
+          <CardDescription className="text-sm sm:text-base">
+            {getStepTitle()}
+          </CardDescription>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="px-4 sm:px-6 py-4">
           <form onSubmit={handleSubmit}>{renderCurrentStep()}</form>
         </CardContent>
 
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-between px-4 sm:px-6 pb-4 sm:pb-6">
           <Button
             variant="outline"
             onClick={prevStep}
             disabled={state.currentStep === 0}
+            className="text-sm sm:text-base px-3 sm:px-4"
           >
             Geri
           </Button>
 
           {state.currentStep < totalSteps - 1 ? (
-            <Button onClick={nextStep} disabled={isNextDisabled()}>
+            <Button
+              onClick={nextStep}
+              disabled={isNextDisabled()}
+              className="text-sm sm:text-base px-3 sm:px-4"
+            >
               İleri
             </Button>
           ) : (
-            <Button type="submit" onClick={handleSubmit}>
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              className="text-sm sm:text-base px-3 sm:px-4"
+            >
               {editMode ? "İçeriği Güncelle" : "İçerik Oluştur"}
             </Button>
           )}

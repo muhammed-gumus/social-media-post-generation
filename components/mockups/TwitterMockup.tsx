@@ -13,6 +13,8 @@ interface TwitterMockupProps {
     };
   };
   contentType: string;
+  username?: string;
+  profilePhotoUrl?: string;
 }
 
 export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
@@ -185,8 +187,7 @@ export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
 
       {/* Date and Twitter info */}
       <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-100">
-        {new Date().toLocaleTimeString()} · {new Date().toLocaleDateString()} ·
-        Twitter for {Math.random() > 0.5 ? "iPhone" : "Web"}
+        12:00 · Nisan 15, 2025 · Twitter for Web
       </div>
     </div>
   );

@@ -9,6 +9,8 @@ interface LinkedinMockupProps {
     hashtags?: string[];
   };
   contentType: string;
+  username?: string;
+  profilePhotoUrl?: string;
 }
 
 export function LinkedinMockup({ content, contentType }: LinkedinMockupProps) {

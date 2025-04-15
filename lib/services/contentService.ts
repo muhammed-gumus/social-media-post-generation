@@ -11,6 +11,98 @@ import {
 } from "@/lib/gemini";
 import { generateSocialMediaImage } from "@/lib/imagen";
 
+// Gelişmiş API istek sırası ve hız sınırlaması yönetimi
+const apiRequestManager = {
+  // Temel ayarlar
+  textRequestQueue: [] as Array<() => Promise<unknown>>,
+  lastTextRequestTime: 0,
+  minTimeBetweenTextRequests: 1500, // 1.5 saniye
+  requestsInProgress: 0,
+  maxConcurrentRequests: 2, // Aynı anda en fazla 2 istek yapabilir
+  isProcessingQueue: false,
+
+  // Sıraya istek ekle
+  enqueue: async function <T>(
+    requestFn: () => Promise<T>,
+    priority = false
+  ): Promise<T> {
+    return new Promise((resolve, reject) => {
+      const queuedRequest = async () => {
+        try {
+          await this.delayIfNeeded();
+          this.requestsInProgress++;
+          const result = await requestFn();
+          this.lastTextRequestTime = Date.now();
+          resolve(result);
+          return result;
+        } catch (error) {
+          reject(error);
+          throw error;
+        } finally {
+          this.requestsInProgress--;
+        }
+      };
+
+      // Öncelikli istekleri sıranın başına, diğerlerini sonuna ekle
+      if (priority) {
+        this.textRequestQueue.unshift(queuedRequest);
+      } else {
+        this.textRequestQueue.push(queuedRequest);
+      }
+
+      // İşlem zaten çalışmıyorsa, sıra işlemeyi başlat
+      if (!this.isProcessingQueue) {
+        this.processQueue();
+      }
+    });
+  },
+
+  // Sıradaki istekleri işle
+  processQueue: async function () {
+    if (this.textRequestQueue.length === 0) {
+      this.isProcessingQueue = false;
+      return;
+    }
+
+    this.isProcessingQueue = true;
+
+    // Aynı anda işlenebilecek istek sayısını kontrol et
+    while (
+      this.textRequestQueue.length > 0 &&
+      this.requestsInProgress < this.maxConcurrentRequests
+    ) {
+      const request = this.textRequestQueue.shift();
+      if (request) {
+        // İsteği async olarak başlat ama bekleme
+        request().catch((error) => {
+          console.error("İstek işleme hatası:", error);
+        });
+      }
+    }
+
+    // Eğer hala sırada istek varsa, durum kontrolü için bekle ve tekrar kontrol et
+    if (this.textRequestQueue.length > 0) {
+      setTimeout(() => this.processQueue(), 500);
+    } else if (this.requestsInProgress === 0) {
+      this.isProcessingQueue = false;
+    } else {
+      // Hala işlemde istek varsa, onlar bitince tekrar kontrol et
+      setTimeout(() => this.processQueue(), 1000);
+    }
+  },
+
+  // API isteği yapmadan önce gecikme ekle
+  delayIfNeeded: async function (): Promise<void> {
+    const now = Date.now();
+    const timeSinceLastRequest = now - this.lastTextRequestTime;
+
+    if (timeSinceLastRequest < this.minTimeBetweenTextRequests) {
+      const delayTime = this.minTimeBetweenTextRequests - timeSinceLastRequest;
+      await new Promise((resolve) => setTimeout(resolve, delayTime));
+    }
+  },
+};
+
 // Define the content generation parameters interface
 export interface ContentGenerationParams {
   platform: string;
@@ -31,6 +123,10 @@ export interface ContentGenerationParams {
   twitterCharLimit?: string;
   facebookPrivacy?: string;
   language?: string;
+  templateId?: string;
+  templatePrompt?: string;
+  templateFields?: Record<string, string>;
+  uploadedImage?: string | null; // Kullanıcının yüklediği görsel
 }
 
 // Define the content result interface
@@ -53,6 +149,7 @@ export interface ContentResult {
     contentLength?: string;
     audienceCategory?: string;
     language?: string;
+    templateId?: string;
     platformSpecificSettings?: {
       filter?: string;
       charLimit?: string;
@@ -86,52 +183,83 @@ export async function generateContent(
     twitterCharLimit = "280",
     facebookPrivacy = "public",
     language = "tr",
+    templateId = "",
+    uploadedImage = null, // Kullanıcının yüklediği görsel
   } = params;
 
   try {
-    // Step 1: Generate all text content in parallel
-    if (progressCallback) progressCallback("AI modeli hazırlanıyor...", 35);
+    // Step 1: Generate text content - İstekleri sıralı şekilde yaparak aşırı yüklemeyi önlüyoruz
+    if (progressCallback) progressCallback("AI modeli hazırlanıyor...", 15);
+    await new Promise((resolve) => setTimeout(resolve, 800)); // UI güncellemesi için bekle
 
-    const textPromises = [
+    if (progressCallback) progressCallback("İçerik analiz ediliyor...", 25);
+    await new Promise((resolve) => setTimeout(resolve, 800)); // UI güncellemesi için bekle
+
+    if (progressCallback) progressCallback("Metin içeriği üretiliyor...", 35);
+
+    // İstekleri paralel olarak başlat fakat düzgün sıraya koyarak
+    const textPromise = apiRequestManager.enqueue(() =>
       generateSocialMediaText(
         platform,
         contentType,
         audience,
         description,
         language
-      ),
-      generateSocialMediaTitle(platform, contentType, description),
-      generateSocialMediaHashtags(platform, description),
-      generateContentSuggestions(platform),
-    ];
+      )
+    );
 
-    if (progressCallback) progressCallback("Metin içeriği üretiliyor...", 45);
-    const textResults = await Promise.allSettled(textPromises);
+    const titlePromise = apiRequestManager.enqueue(() =>
+      generateSocialMediaTitle(platform, contentType, description)
+    );
 
-    const text =
-      textResults[0].status === "fulfilled"
-        ? (textResults[0].value as string)
-        : "İçerik oluşturulamadı. Lütfen tekrar deneyin.";
+    const hashtagsPromise = apiRequestManager.enqueue(() =>
+      generateSocialMediaHashtags(platform, description)
+    );
 
-    const title =
-      textResults[1].status === "fulfilled"
-        ? (textResults[1].value as string)
-        : "Oluşturulan İçerik";
+    const suggestionsPromise = apiRequestManager.enqueue(() =>
+      generateContentSuggestions(platform)
+    );
 
-    const hashtags =
-      textResults[2].status === "fulfilled"
-        ? (textResults[2].value as string[])
-        : ["#içerik", "#sosyalmedya"];
+    // İsteklerin sonuçlarını bekle ve hataları yönet
+    let text;
+    try {
+      text = await textPromise;
+      if (progressCallback) progressCallback("İçerik oluşturuluyor...", 45);
+    } catch (error) {
+      console.error("Metin oluşturma hatası:", error);
+      text = "İçerik oluşturulamadı. Lütfen tekrar deneyin.";
+    }
 
-    const suggestions =
-      textResults[3].status === "fulfilled"
-        ? (textResults[3].value as string[])
-        : [
-            "İçeriğinizi düzenli olarak paylaşın",
-            "Hedef kitlenizle etkileşime geçin",
-          ];
+    let title;
+    try {
+      title = await titlePromise;
+      if (progressCallback) progressCallback("Başlık oluşturuluyor...", 55);
+    } catch (error) {
+      console.error("Başlık oluşturma hatası:", error);
+      title = "Oluşturulan İçerik";
+    }
 
-    if (progressCallback) progressCallback("İçerik optimize ediliyor...", 60);
+    let hashtags;
+    try {
+      hashtags = await hashtagsPromise;
+      if (progressCallback)
+        progressCallback("Hashtag'ler oluşturuluyor...", 65);
+    } catch (error) {
+      console.error("Hashtag oluşturma hatası:", error);
+      hashtags = ["#içerik", "#sosyalmedya"];
+    }
+
+    let suggestions;
+    try {
+      suggestions = await suggestionsPromise;
+      if (progressCallback) progressCallback("Öneriler hazırlanıyor...", 75);
+    } catch (error) {
+      console.error("Öneri oluşturma hatası:", error);
+      suggestions = [
+        "İçeriğinizi düzenli olarak paylaşın",
+        "Hedef kitlenizle etkileşime geçin",
+      ];
+    }
 
     // Step 2: Handle platform-specific settings
     const platformSpecificSettings = {
@@ -142,28 +270,68 @@ export async function generateContent(
       ...(platform === "facebook" ? { privacy: facebookPrivacy } : {}),
     };
 
-    // Step 3: Generate image if required
+    // Step 3: Handle image - Use uploaded image if available, otherwise generate
     let imageUrl = "/file.svg";
 
-    if (imageRequired) {
-      if (progressCallback) progressCallback("Görsel üretiliyor...", 80);
-
+    // Eğer kullanıcı bir görsel yüklediyse, doğrudan o görseli kullan
+    if (uploadedImage) {
+      imageUrl = uploadedImage;
+      if (progressCallback)
+        progressCallback("Yüklenen görsel kullanılıyor...", 85);
+    }
+    // Aksi takdirde AI ile görsel oluştur
+    else if (imageRequired) {
+      if (progressCallback) progressCallback("Görsel üretiliyor...", 85);
       try {
+        // Görsel isteğini kuyruğa ekle ve ön sıraya al (forceGeneration=true)
         imageUrl = await generateSocialMediaImage(
           platform,
           contentType,
           description,
-          industry // Pass industry information to image generation
+          industry,
+          true // Force generation - ilk içerik üretiminde rate limit olsa bile atlayıp görsel oluştur
         );
+
+        // Hala varsayılan görsel dönerse, bir kez daha deneme yap
         if (imageUrl === "/file.svg") {
-          console.warn("Görsel oluşturulamadı, varsayılan ikon kullanılacak.");
+          console.warn(
+            "İlk görsel denemesi başarısız oldu, tekrar deneniyor..."
+          );
+          if (progressCallback)
+            progressCallback("Görsel oluşturulamadı, tekrar deneniyor...", 85);
+
+          // Kısa bir beklemeden sonra tekrar dene
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          imageUrl = await generateSocialMediaImage(
+            platform,
+            contentType,
+            description,
+            industry,
+            true // İkinci denemede de force generation kullan
+          );
+
+          // Yine başarısız olursa kullanıcıyı bilgilendir
+          if (imageUrl === "/file.svg") {
+            console.warn(
+              "Görsel oluşturulamadı veya rate limit aşıldı, varsayılan ikon kullanılacak."
+            );
+            if (progressCallback)
+              progressCallback(
+                "Görsel oluşturulamadı, varsayılan ikon kullanılacak",
+                85
+              );
+          }
         }
       } catch (imageError) {
         console.error("Görsel oluşturma sırasında hata:", imageError);
+        if (progressCallback)
+          progressCallback("Görsel üretilemiyor - API hatası", 85);
       }
     }
 
-    if (progressCallback) progressCallback("Son düzenlemeler yapılıyor...", 90);
+    if (progressCallback) progressCallback("Son düzenlemeler yapılıyor...", 95);
+    await new Promise((resolve) => setTimeout(resolve, 800)); // UI güncellemesi için bekle
 
     // Step 4: Create the complete result object
     const metaData = {
@@ -175,11 +343,15 @@ export async function generateContent(
       contentLength,
       audienceCategory,
       language,
+      templateId: templateId || undefined,
       platformSpecificSettings:
         Object.keys(platformSpecificSettings).length > 0
           ? platformSpecificSettings
           : undefined,
     };
+
+    // Final progress update
+    if (progressCallback) progressCallback("İçerik hazır!", 100);
 
     // Return the final content result
     return {

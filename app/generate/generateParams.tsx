@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { createContext, useContext, ReactNode } from "react";
+import { getTemplateById } from "@/lib/templateData";
 
 // Tüm parametre türleri için bir interface oluşturuyoruz
 interface GenerateParams {
@@ -25,6 +26,9 @@ interface GenerateParams {
   facebookPrivacy: string;
   username: string;
   profilePhotoUrl: string;
+  templateId: string;
+  templatePrompt: string;
+  templateFields: Record<string, string>;
 }
 
 // Varsayılan değerler
@@ -49,6 +53,9 @@ const defaultParams: GenerateParams = {
   facebookPrivacy: "public",
   username: "",
   profilePhotoUrl: "",
+  templateId: "",
+  templatePrompt: "",
+  templateFields: {},
 };
 
 // Context for params
@@ -61,20 +68,43 @@ export const useGenerateParams = () => useContext(GenerateParamsContext);
 export function GenerateParamsProvider({ children }: { children: ReactNode }) {
   const searchParams = useSearchParams();
 
+  // Check if a template is being used
+  const templateId = searchParams.get("template") || "";
+  // Get template without passing arguments, as the function doesn't accept any
+  const template = templateId ? getTemplateById() : null;
+
   // Extract all params
   const params: GenerateParams = {
-    platform: searchParams.get("platform") || defaultParams.platform,
-    contentType: searchParams.get("contentType") || defaultParams.contentType,
+    platform:
+      searchParams.get("platform") ||
+      template?.platform ||
+      defaultParams.platform,
+    contentType:
+      searchParams.get("contentType") ||
+      template?.contentType ||
+      defaultParams.contentType,
     audience: searchParams.get("audience") || defaultParams.audience,
     audienceCategory:
       searchParams.get("audienceCategory") || defaultParams.audienceCategory,
-    tone: searchParams.get("tone") || defaultParams.tone,
+    tone:
+      searchParams.get("tone") ||
+      template?.prefilledFields?.tone ||
+      defaultParams.tone,
     description: searchParams.get("description") || defaultParams.description,
     keywords: searchParams.get("keywords") || defaultParams.keywords,
     imageRequired: searchParams.get("imageRequired") !== "false",
-    language: searchParams.get("language") || defaultParams.language,
-    purpose: searchParams.get("purpose") || defaultParams.purpose,
-    industry: searchParams.get("industry") || defaultParams.industry,
+    language:
+      searchParams.get("language") ||
+      template?.prefilledFields?.language ||
+      defaultParams.language,
+    purpose:
+      searchParams.get("purpose") ||
+      template?.prefilledFields?.purpose ||
+      defaultParams.purpose,
+    industry:
+      searchParams.get("industry") ||
+      template?.industry ||
+      defaultParams.industry,
     contentLength:
       searchParams.get("contentLength") || defaultParams.contentLength,
     targetAgeRange:
@@ -92,6 +122,9 @@ export function GenerateParamsProvider({ children }: { children: ReactNode }) {
     username: searchParams.get("username") || defaultParams.username,
     profilePhotoUrl:
       searchParams.get("profilePhotoUrl") || defaultParams.profilePhotoUrl,
+    templateId: templateId,
+    templatePrompt: template?.prompt || "",
+    templateFields: template?.prefilledFields || {},
   };
 
   return (

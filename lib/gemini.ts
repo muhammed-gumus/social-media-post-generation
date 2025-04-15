@@ -1,4 +1,4 @@
-// Google'ın Gemini 2.0 Flash API'si için yardımcı fonksiyonlar
+// İleri düzey doğal dil işleme API'si için yardımcı fonksiyonlar
 
 /**
  * Dil kodunu tam dil adına dönüştürür
@@ -20,13 +20,13 @@ function getLanguageName(languageCode: string): string {
   return languageNames[languageCode] || languageCode;
 }
 
-// Define type for Gemini API response parts
-interface GeminiResponsePart {
+// Define type for API response parts
+interface AIResponsePart {
   text?: string;
 }
 
 /**
- * Gemini API ile metin içeriği oluşturur
+ * API ile metin içeriği oluşturur
  * @param prompt Metin oluşturma için prompt
  * @returns Oluşturulan metin içeriği
  */
@@ -35,7 +35,7 @@ export async function generateText(prompt: string): Promise<string> {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 
     if (!apiKey) {
-      console.error("Google API anahtarı bulunamadı.");
+      console.error("API anahtarı bulunamadı.");
       return "API anahtarı eksik. İçerik üretilemedi.";
     }
 
@@ -82,7 +82,7 @@ export async function generateText(prompt: string): Promise<string> {
 
       if (data?.candidates?.[0]?.content?.parts) {
         const text = data.candidates[0].content.parts
-          .map((part: GeminiResponsePart) => part.text || "")
+          .map((part: AIResponsePart) => part.text || "")
           .join("");
         return text || "İçerik üretilemedi.";
       } else {
@@ -94,7 +94,7 @@ export async function generateText(prompt: string): Promise<string> {
       return "Bağlantı hatası. İçerik üretilemedi.";
     }
   } catch (error) {
-    console.error("Gemini API hatası:", error);
+    console.error("API hatası:", error);
     return "İçerik oluşturulamadı. Lütfen daha sonra tekrar deneyin.";
   }
 }

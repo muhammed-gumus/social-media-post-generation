@@ -22,7 +22,7 @@ const defaultParams: ResultParams = {
   audienceCategory: "demographic",
   tone: "informative",
   username: "",
-  profilePhotoUrl: ""
+  profilePhotoUrl: "",
 };
 
 // Context for params
@@ -34,16 +34,18 @@ export const useResultParams = () => useContext(ResultParamsContext);
 // The wrapper component
 export function ResultParamsProvider({ children }: { children: ReactNode }) {
   const searchParams = useSearchParams();
-  
+
   // Extract all params
   const params: ResultParams = {
     platform: searchParams.get("platform") || defaultParams.platform,
     contentType: searchParams.get("contentType") || defaultParams.contentType,
     audience: searchParams.get("audience") || defaultParams.audience,
-    audienceCategory: searchParams.get("audienceCategory") || defaultParams.audienceCategory,
+    audienceCategory:
+      searchParams.get("audienceCategory") || defaultParams.audienceCategory,
     tone: searchParams.get("tone") || defaultParams.tone,
     username: searchParams.get("username") || defaultParams.username,
-    profilePhotoUrl: searchParams.get("profilePhotoUrl") || defaultParams.profilePhotoUrl,
+    profilePhotoUrl:
+      searchParams.get("profilePhotoUrl") || defaultParams.profilePhotoUrl,
   };
 
   return (

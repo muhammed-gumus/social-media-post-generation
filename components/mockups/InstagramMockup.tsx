@@ -9,11 +9,15 @@ interface InstagramMockupProps {
     hashtags?: string[];
   };
   contentType: string;
+  username?: string;
+  profilePhotoUrl?: string;
 }
 
 export function InstagramMockup({
   content,
   contentType,
+  username = "username",
+  profilePhotoUrl,
 }: InstagramMockupProps) {
   const isStory = contentType === "story";
 
@@ -43,10 +47,20 @@ export function InstagramMockup({
           {/* Header */}
           <div className="flex items-center mb-auto z-10">
             <div className="h-8 w-8 rounded-full bg-white p-0.5 flex-shrink-0">
-              <div className="h-full w-full rounded-full bg-gray-200"></div>
+              {profilePhotoUrl ? (
+                <Image
+                  src={profilePhotoUrl}
+                  alt="Profile photo"
+                  className="h-full w-full rounded-full object-cover"
+                  width={32}
+                  height={32}
+                />
+              ) : (
+                <div className="h-full w-full rounded-full bg-gray-200"></div>
+              )}
             </div>
             <div className="ml-2 text-white text-sm font-semibold">
-              username
+              {username}
             </div>
             <div className="ml-auto">
               <div className="text-white text-xs">13s</div>
@@ -82,10 +96,20 @@ export function InstagramMockup({
       <div className="flex items-center p-3">
         <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-0.5 flex-shrink-0">
           <div className="h-full w-full rounded-full bg-white flex items-center justify-center">
-            <div className="h-[calc(100%-2px)] w-[calc(100%-2px)] rounded-full bg-gray-200"></div>
+            {profilePhotoUrl ? (
+              <Image
+                src={profilePhotoUrl}
+                alt="Profile photo"
+                className="h-[calc(100%-2px)] w-[calc(100%-2px)] rounded-full object-cover"
+                width={32}
+                height={32}
+              />
+            ) : (
+              <div className="h-[calc(100%-2px)] w-[calc(100%-2px)] rounded-full bg-gray-200"></div>
+            )}
           </div>
         </div>
-        <div className="ml-3 font-semibold text-sm">username</div>
+        <div className="ml-3 font-semibold text-sm">{username}</div>
         <div className="ml-auto">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +227,7 @@ export function InstagramMockup({
       {/* Caption */}
       <div className="px-3 pb-3">
         <div className="text-sm">
-          <span className="font-semibold mr-1">username</span>
+          <span className="font-semibold mr-1">{username}</span>
           {content.text}
         </div>
 

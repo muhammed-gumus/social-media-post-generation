@@ -799,7 +799,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       platformSpecificParams += `&facebookPrivacy=${state.facebookPrivacy}`;
     }
 
-    // Redirect to generate page with all parameters
+    // Redirect to generate page with all parameters - Otomatik içerik üretimini tetikleyecek parametre
     window.location.href = `/generate?platform=${
       state.selectedPlatform
     }&contentType=${state.selectedContentType}&audience=${
@@ -810,7 +810,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       state.contentDescription
     )}&keywords=${encodeURIComponent(state.contentKeywords)}&language=${
       state.selectedLanguage
-    }${extendedParams}${platformSpecificParams}${profileData}`;
+    }${extendedParams}${platformSpecificParams}${profileData}&fromWizard=true`;
   };
 
   // Data accessor functions

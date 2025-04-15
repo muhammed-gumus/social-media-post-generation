@@ -9,6 +9,8 @@ interface FacebookMockupProps {
     hashtags?: string[];
   };
   contentType: string;
+  username?: string;
+  profilePhotoUrl?: string;
 }
 
 export function FacebookMockup({ content, contentType }: FacebookMockupProps) {

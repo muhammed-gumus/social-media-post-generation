@@ -88,6 +88,10 @@ interface ContentResult {
   imageUrl: string;
   hashtags: string[];
   suggestions: string[];
+  profileInfo?: {
+    username: string;
+    photoUrl: string;
+  };
 }
 
 interface ThreadContent {
@@ -98,7 +102,7 @@ export default function ResultClient() {
   const params = useResultParams();
   const router = useRouter();
 
-  const { platform, contentType, audience} = params;
+  const { platform, contentType, audience, username, profilePhotoUrl } = params;
 
   const [result, setResult] = useState<ContentResult>({
     title: "",
@@ -394,33 +398,62 @@ export default function ResultClient() {
   const renderPlatformMockup = () => {
     const contentForDisplay = getThreadContentForDisplay();
 
+    // Mockup bileşenleri için gereken tüm içeriği hazırla
+    // Öncelikle localStorage'da saklanan profileInfo verilerini kontrol et
+    const storedUsername = result.profileInfo?.username;
+    const storedPhotoUrl = result.profileInfo?.photoUrl;
+
+    const mockupProps = {
+      content: {
+        text: contentForDisplay.text,
+        imageUrl: contentForDisplay.imageUrl,
+        title: contentForDisplay.title,
+        hashtags: contentForDisplay.hashtags,
+      },
+      contentType: contentType,
+      // Öncelikle result içindeki profileInfo verisini kullan, yoksa URL parametrelerinden al
+      username: storedUsername || username || "username",
+      profilePhotoUrl:
+        storedPhotoUrl ||
+        profilePhotoUrl ||
+        `https://i.pravatar.cc/150?u=default`,
+    };
+
     switch (platform) {
       case "twitter":
         return (
           <TwitterMockup
-            content={contentForDisplay}
+            content={mockupProps.content}
             contentType={contentType}
+            username={mockupProps.username}
+            profilePhotoUrl={mockupProps.profilePhotoUrl}
           />
         );
       case "instagram":
         return (
           <InstagramMockup
-            content={contentForDisplay}
+            content={mockupProps.content}
             contentType={contentType}
+            username={mockupProps.username}
+            profilePhotoUrl={mockupProps.profilePhotoUrl}
           />
         );
       case "linkedin":
         return (
           <LinkedinMockup
-            content={contentForDisplay}
+            content={mockupProps.content}
             contentType={contentType}
+            username={mockupProps.username}
+            profilePhotoUrl={mockupProps.profilePhotoUrl}
           />
         );
       case "facebook":
         return (
           <FacebookMockup
-            content={contentForDisplay}
+            content={mockupProps.content}
             contentType={contentType}
+            username={mockupProps.username}
+            profilePhotoUrl={mockupProps.profilePhotoUrl}
           />
         );
       default:
