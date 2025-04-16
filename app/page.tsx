@@ -9,6 +9,9 @@ import {
   FileText,
   Users,
   Layers,
+  InstagramIcon,
+  LinkedinIcon,
+  FacebookIcon,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -20,7 +23,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-center md:text-left">
             <div className="flex flex-col items-center md:items-start">
-              <div className="w-full max-w-md relative">
+              <div className="w-full max-w-md relative hidden md:block">
                 {/* Circle bottom left */}
                 <div className="absolute -bottom-3 -left-2 w-5 h-5 rounded-full bg-white border-2 border-black z-10"></div>
               </div>
@@ -200,40 +203,57 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="md:w-1/2 grid grid-cols-2 gap-4">
-              <div className="aspect-square bg-[#ffde59] border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
+            <div className="w-full md:w-1/2 grid grid-cols-2 gap-4">
+              <div className="aspect-square bg-[#E1306C] border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
                 <div className="absolute top-2 right-2 bg-white border-2 border-black px-2 py-1 text-xs font-bold">
                   INSTAGRAM
                 </div>
                 <div className="h-full flex flex-col">
-                  <div className="border-2 border-black bg-white flex-1"></div>
+                  <div className="border-2 border-black bg-white flex flex-1 items-center justify-center ">
+                    <InstagramIcon className="h-10 w-10" />
+                  </div>
                 </div>
               </div>
 
-              <div className="aspect-square bg-black border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
+              <div className="aspect-square bg-[#14171A] border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
                 <div className="absolute top-2 right-2 bg-white border-2 border-black px-2 py-1 text-xs font-bold">
-                  TWITTER
+                  X
                 </div>
                 <div className="h-full flex flex-col">
-                  <div className="border-2 border-black bg-white flex-1"></div>
+                  <div className="border-2 border-black bg-white flex flex-1 items-center justify-center ">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      x="0px"
+                      y="0px"
+                      width="40"
+                      height="40"
+                      viewBox="0 0 30 30"
+                    >
+                      <path d="M26.37,26l-8.795-12.822l0.015,0.012L25.52,4h-2.65l-6.46,7.48L11.28,4H4.33l8.211,11.971L12.54,15.97L3.88,26h2.65 l7.182-8.322L19.42,26H26.37z M10.23,6l12.34,18h-2.1L8.12,6H10.23z"></path>
+                    </svg>
+                  </div>
                 </div>
               </div>
 
-              <div className="aspect-square bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
-                <div className="absolute top-2 right-2 bg-[#ffde59] border-2 border-black px-2 py-1 text-xs font-bold">
+              <div className="aspect-square bg-[#0077B5] border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
+                <div className="absolute top-2 right-2 bg-white border-2 border-black px-2 py-1 text-xs font-bold">
                   LINKEDIN
                 </div>
                 <div className="h-full flex flex-col">
-                  <div className="border-2 border-black bg-gray-100 flex-1"></div>
+                  <div className="border-2 border-black bg-white flex flex-1 items-center justify-center ">
+                    <LinkedinIcon className="h-10 w-10" />
+                  </div>
                 </div>
               </div>
 
-              <div className="aspect-square bg-gray-200 border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
+              <div className="aspect-square bg-[#4267B2] border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
                 <div className="absolute top-2 right-2 bg-white border-2 border-black px-2 py-1 text-xs font-bold">
                   FACEBOOK
                 </div>
                 <div className="h-full flex flex-col">
-                  <div className="border-2 border-black bg-white flex-1"></div>
+                  <div className="border-2 border-black bg-white flex flex-1 items-center justify-center ">
+                    <FacebookIcon className="h-10 w-10" />
+                  </div>
                 </div>
               </div>
             </div>
