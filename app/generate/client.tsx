@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -127,7 +127,7 @@ export default function GenerateClient() {
     startContentGeneration();
   };
 
-  const startContentGeneration = () => {
+  const startContentGeneration = useCallback(() => {
     const statusMessages = [
       "Parametreler analiz ediliyor...",
       "İçerik stratejisi belirleniyor...",
@@ -295,7 +295,37 @@ export default function GenerateClient() {
     };
 
     generateContentProcess();
-  };
+  }, [
+    platform,
+    contentType,
+    audience,
+    audienceCategory,
+    tone,
+    description,
+    keywords,
+    purpose,
+    industry,
+    contentLength,
+    targetAgeRange,
+    targetGender,
+    targetLocation,
+    imageRequired,
+    instagramFilter,
+    twitterCharLimit,
+    facebookPrivacy,
+    language,
+    templateId,
+    templatePrompt,
+    templateInputs,
+    uploadedImage,
+    username,
+    profilePhotoUrl,
+    setProgress,
+    setStatus,
+    setError,
+    setIsRedirecting,
+    router,
+  ]);
 
   // Sayfa yüklendiğinde otomatik olarak içerik oluşturma işlemini başlat
   useEffect(() => {

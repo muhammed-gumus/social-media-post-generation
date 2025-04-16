@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { League_Spartan } from "next/font/google";
 import "./globals.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const leagueSpartan = League_Spartan({
+  variable: "--font-league-spartan",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Sosyal Medya İçerik Üretici",
+  title: "Socreate - AI İçerik Üretici",
   description:
-    "Google Imagen ve Gemini AI ile sosyal medya içerikleri oluşturun",
+    "Gelişmiş Görsel Oluşturma ve Üstün Yapay Zeka teknolojilerimiz ile sosyal medya içerikleri oluşturun",
 };
 
 export default function RootLayout({
@@ -28,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="tr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+        className={`${leagueSpartan.variable} antialiased flex flex-col min-h-screen`}
       >
         <Header />
         <main className="flex-1">{children}</main>

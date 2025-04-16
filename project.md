@@ -4,23 +4,23 @@
 
 Bu proje, kullanıcıdan stepper (adım adım ilerleyen form) aracılığıyla belirli bilgiler alarak, bu bilgiler doğrultusunda sosyal medya platformları (Instagram, Twitter, LinkedIn vb.) için görsel, metin veya görsel+metin içerik oluşturan bir web uygulamasıdır.
 
-Oluşturulacak içerikler, Google'ın **Imagen 3 API'si** ve **Gemini 2.0 Flash** modeli kullanılarak üretilecektir. Görsel ve metin içeriklerin ayrı ayrı veya birlikte üretilmesi seçenekleri sunulacaktır.
+Oluşturulacak içerikler, **Gelişmiş Görsel Oluşturma Teknolojimiz** ve **Üstün Yapay Zeka Metin Modeli** kullanılarak üretilecektir. Görsel ve metin içeriklerin ayrı ayrı veya birlikte üretilmesi seçenekleri sunulacaktır.
 
 ## Teknolojiler
 
 - **Frontend:** Next.js 14 (App Router) + TypeScript
 - **UI Kit:** Tailwind CSS + shadcn/ui
 - **LLM Entegrasyonu:**
-  - `Gemini 2.0 Flash` (Google)
-  - `Imagen 3` (Google)
+  - `Üstün Yapay Zeka Metin Teknolojisi` (İleri Seviye NLP)
+  - `Gelişmiş Görsel Oluşturma Sistemi` (Yenilikçi Görüntü Sentezi)
 
 ## Özellikler
 
 - Stepper yapısı ile kullanıcıdan içerik bilgisi alma
 - Kullanıcı seçimine göre platform odaklı içerik üretimi
 - Metin, görsel veya her ikisini üretebilme
-- Görsel içerikler için Imagen 3 API kullanımı
-- Metin üretimi için Gemini 2.0 Flash modeli
+- Görsel içerikler için Gelişmiş Görüntü Sentezleme Motorumuz kullanımı
+- Metin üretimi için Üstün Yapay Zeka Metin Modelimiz
 - Üretilecek içeriklerin önizlemesi ve indirilmesi
 
 ## Sayfa Akışı ve Yapısı
@@ -61,8 +61,8 @@ Oluşturulacak içerikler, Google'ın **Imagen 3 API'si** ve **Gemini 2.0 Flash*
 ### 3. İçerik Oluşturma Sayfası (`/generate`)
 
 - API istekleri başlatılır
-- Metin: Gemini 2.0 Flash API kullanılır
-- Görsel: Imagen 3 API kullanılır
+- Metin: Üstün Yapay Zeka Metin Teknolojimiz kullanılır
+- Görsel: Gelişmiş Görsel Oluşturma Sistemimiz kullanılır
 - Tüm içerikler önizlenebilir
 
 ### 4. İçerik Çıktısı Sayfası (`/result`)
@@ -73,12 +73,12 @@ Oluşturulacak içerikler, Google'ın **Imagen 3 API'si** ve **Gemini 2.0 Flash*
 
 ## API Entegrasyon Akışı
 
-### Imagen 3 (Google)
+### Gelişmiş Görsel Oluşturma Sistemi
 
 - Kullanıcı prompt'una göre görsel üretimi için kullanılır.
 - Görsel istemi: stepper'dan toplanan bilgilerle şekillendirilir.
 
-### Gemini 2.0 Flash
+### Üstün Yapay Zeka Metin Modeli
 
 - Hızlı metin oluşturma ve bilgi işleme için kullanılır
 - Alternatif metinler, başlıklar, hashtag önerileri üretimi
@@ -107,5 +107,4 @@ Oluşturulacak içerikler, Google'ın **Imagen 3 API'si** ve **Gemini 2.0 Flash*
 
 ##
 
-Bu döküman, Gemini 2.0 Flash ve Imagen 3 API'leri ile geliştirilecek olan bu projeye teknik bir yol haritası sağlamak amacıyla hazırlanmıştır. Detaylara göre bileşen bileşen geliştirme yapılabilir.
-
+Bu döküman, İleri Seviye Yapay Zeka Metin Teknolojimiz ve Gelişmiş Görsel Üretim Sistemimiz ile geliştirilecek olan bu projeye teknik bir yol haritası sağlamak amacıyla hazırlanmıştır. Detaylara göre bileşen bileşen geliştirme yapılabilir.

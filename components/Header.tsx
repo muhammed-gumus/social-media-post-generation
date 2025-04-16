@@ -1,19 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import {
   Menu,
   X,
-  ChevronRight,
   Zap,
   LayoutTemplate,
   Twitter,
+  ArrowRight,
 } from "lucide-react";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Handle scroll event to change header style
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 10;
+      setIsScrolled(scrolled);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Lock scrolling when menu is open
   useEffect(() => {
@@ -40,72 +51,68 @@ export function Header() {
 
   return (
     <>
-      <header className="w-full py-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+      <header
+        className={`w-full py-2 sticky top-0 z-50 transition-all duration-300 ${
+          isScrolled ? "bg-[#ffde59] border-b-4 border-black" : "bg-gray-50"
+        }`}
+      >
         <div className="container max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           {/* Logo - Left Side */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center overflow-hidden group-hover:bg-primary/20 transition-colors">
-              <Image
-                src="/file.svg"
-                alt="Logo"
-                width={24}
-                height={24}
-                className="object-contain group-hover:scale-110 transition-transform"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg leading-none">
-                İçerik Üretici
-              </span>
-              <span className="text-muted-foreground text-xs">
-                AI Destekli İçerikler
-              </span>
-            </div>
+          <Link href="/" className="flex items-center gap-3">
+            <span className="text-5xl text-black socreate-logo">socreate</span>
           </Link>
 
           {/* Right Side: Navigation + CTA Button */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-12">
             {/* Navigation Links */}
-            <nav className="flex items-center gap-6">
+            <nav className="flex items-center gap-8">
               <Link
                 href="/wizard"
-                className="text-foreground/80 hover:text-primary transition-colors relative group py-1 flex items-center gap-1"
+                className="font-semibold text-base relative group transition-colors hover:text-black flex items-center"
               >
-                <span>İçerik Oluştur</span>
-                <Zap className="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+                <div className="w-6">
+                  <Zap className="w-4 h-4 text-black hidden group-hover:inline-block" />
+                </div>
+                <span className="transition-transform group-hover:translate-x-2">
+                  İçerik Oluştur
+                </span>
               </Link>
               <Link
                 href="/templates"
-                className="text-foreground/80 hover:text-primary transition-colors relative group py-1 flex items-center gap-1"
+                className="font-semibold text-base relative group transition-colors hover:text-black flex items-center"
               >
-                <span>Hazır İçerikler</span>
-                <LayoutTemplate className="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+                <div className="w-6">
+                  <LayoutTemplate className="w-4 h-4 text-black hidden group-hover:inline-block" />
+                </div>
+                <span className="transition-transform group-hover:translate-x-2">
+                  Hazır İçerikler
+                </span>
               </Link>
               <Link
                 href="/twitter-insights"
-                className="text-foreground/80 hover:text-primary transition-colors relative group py-1 flex items-center gap-1"
+                className="font-semibold text-base relative group transition-colors hover:text-black flex items-center"
               >
-                <span>Twitter(X) Analizi</span>
-                <Twitter className="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+                <div className="w-6">
+                  <Twitter className="w-4 h-4 text-black hidden group-hover:inline-block" />
+                </div>
+                <span className="transition-transform group-hover:translate-x-2">
+                  Twitter Analizi
+                </span>
               </Link>
             </nav>
 
             {/* Call to Action Button */}
             <Link
               href="/wizard"
-              className="rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:bg-primary/90 transition-all flex items-center gap-1 hover:shadow-md hover:shadow-primary/20 hover:translate-y-[-1px]"
+              className="bg-white text-black font-bold text-base px-6 py-0.5 border-2 border-black flex items-center shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-shadow"
             >
               <span>Başla</span>
-              <ChevronRight size={16} />
             </Link>
           </div>
 
           {/* Mobile Menu Button - improved with accessibility */}
           <button
-            className="md:hidden flex items-center justify-center w-10 h-10 text-foreground hover:bg-muted rounded-full transition-colors"
+            className="md:hidden flex items-center justify-center w-10 h-10 border-2 border-black bg-white shadow-[3px_3px_0px_#000] hover:shadow-[1px_1px_0px_#000] transition-shadow"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Menüyü Aç/Kapat"
             aria-expanded={isMenuOpen}
@@ -120,109 +127,73 @@ export function Header() {
       {isMenuOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden fixed inset-0 top-0 left-0 right-0 bottom-0 z-[100] bg-background/95 backdrop-blur-md"
+          className="md:hidden fixed inset-0 top-0 left-0 right-0 bottom-0 z-[100] bg-[#ffde59] border-4 border-black"
         >
-          <div className="w-full py-4 border-b flex items-center justify-between px-4 sm:px-6 max-w-6xl mx-auto">
+          <div className="w-full py-5 border-b-4 border-black flex items-center justify-between px-4 sm:px-6 max-w-6xl mx-auto">
             {/* Logo - Left Side */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center overflow-hidden group-hover:bg-primary/20 transition-colors">
-                <Image
-                  src="/file.svg"
-                  alt="Logo"
-                  width={24}
-                  height={24}
-                  className="object-contain group-hover:scale-110 transition-transform"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-lg leading-none">
-                  İçerik Üretici
-                </span>
-                <span className="text-muted-foreground text-xs">
-                  AI Destekli İçerikler
-                </span>
-              </div>
+            <Link href="/" className="flex items-center gap-3">
+              <span className="text-5xl text-black socreate-logo">
+                socreate
+              </span>
             </Link>
 
             {/* Close Button */}
             <button
-              className="flex items-center justify-center w-10 h-10 text-foreground hover:bg-muted rounded-full transition-colors"
+              className="flex items-center justify-center w-12 h-12 border-2 border-black bg-white shadow-[3px_3px_0px_#000] hover:shadow-[1px_1px_0px_#000] transition-shadow"
               onClick={() => setIsMenuOpen(false)}
               aria-label="Menüyü Kapat"
             >
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
 
-          <nav className="flex flex-col p-6 h-[calc(100%-73px)] animate-in fade-in duration-200">
-            <div className="space-y-2">
+          <nav className="flex flex-col p-8 h-[calc(100%-85px)] animate-in fade-in duration-200">
+            <div className="space-y-8">
               <Link
                 href="/wizard"
-                className="text-lg font-medium text-foreground transition-all px-4 py-3.5 hover:bg-muted/50 active:bg-muted/60 rounded-xl flex items-center justify-between group"
+                className="block text-lg font-bold px-4 py-3 border-2 border-black bg-white shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1 flex items-center justify-between"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
-                    <Zap size={16} />
-                  </div>
-                  <span>Adım Adım Sihirbaz</span>
-                </div>
-                <ChevronRight
-                  size={18}
-                  className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all"
-                />
+                <span>İçerik Oluştur</span>
+                <Zap className="w-5 h-5" />
               </Link>
+
               <Link
                 href="/templates"
-                className="text-lg font-medium text-foreground transition-all px-4 py-3.5 hover:bg-muted/50 active:bg-muted/60 rounded-xl flex items-center justify-between group"
+                className="block text-lg font-bold px-4 py-3 border-2 border-black bg-white shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1 flex items-center justify-between"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
-                    <LayoutTemplate size={16} />
-                  </div>
-                  <span>Hazır İçerikler</span>
-                </div>
-                <ChevronRight
-                  size={18}
-                  className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all"
-                />
+                <span>Hazır İçerikler</span>
+                <LayoutTemplate className="w-5 h-5" />
               </Link>
+
               <Link
                 href="/twitter-insights"
-                className="text-lg font-medium text-foreground transition-all px-4 py-3.5 hover:bg-muted/50 active:bg-muted/60 rounded-xl flex items-center justify-between group"
+                className="block text-lg font-bold px-4 py-3 border-2 border-black bg-white shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1 flex items-center justify-between"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
-                    <Twitter size={16} />
-                  </div>
-                  <span>Twitter(X) Analizi</span>
-                </div>
-                <ChevronRight
-                  size={18}
-                  className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all"
-                />
+                <span>Twitter Analizi</span>
+                <Twitter className="w-5 h-5" />
               </Link>
             </div>
 
-            <div className="mt-auto pt-6 border-t border-muted/50">
+            <div className="mt-auto pt-10">
               <Link
                 href="/wizard"
-                className="rounded-xl bg-primary text-primary-foreground py-4 text-base font-medium hover:bg-primary/90 active:bg-primary/80 transition-all flex items-center justify-center gap-2 w-full shadow-sm hover:translate-y-[-1px]"
+                className="flex items-center justify-between px-4 bg-white text-black font-bold text-xl py-4 w-full border-2 border-black shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span>Hemen Başla</span>
-                <ChevronRight size={18} />
+                <ArrowRight className="w-5 h-5" />
               </Link>
 
-              <button
+              {/* <button
                 onClick={() => setIsMenuOpen(false)}
-                className="mt-4 py-3 w-full text-center text-muted-foreground hover:text-foreground transition-colors rounded-xl flex items-center justify-center gap-1.5 hover:bg-muted/30"
+                className="mt-6 py-3 w-full text-center font-bold text-lg flex items-center justify-center border-2 border-black bg-white shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1"
               >
-                <X size={16} />
+                <X size={18} className="mr-2" />
                 <span>Kapat</span>
-              </button>
+              </button> */}
             </div>
           </nav>
         </div>
