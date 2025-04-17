@@ -2,15 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import Link from "next/link";
 import {
@@ -373,13 +364,16 @@ export default function ResultClient() {
 
   if (error) {
     return (
-      <div className="container max-w-4xl mx-auto py-12 px-4 text-center">
-        <div className="mb-8 p-6 rounded-lg border bg-red-50/50 dark:bg-red-900/10">
-          <h1 className="text-2xl font-semibold mb-2">Bir Hata Oluştu</h1>
-          <p>{error}</p>
+      <div className="container max-w-4xl mx-auto py-12 px-4 text-center bg-gray-50">
+        <div className="mb-8 p-6 border-2 border-black bg-red-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+          <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-white border-2 border-black z-10"></div>
+          <h1 className="text-2xl font-black mb-2">Bir Hata Oluştu</h1>
+          <p className="font-medium text-lg">{error}</p>
         </div>
         <Link href="/wizard">
-          <Button>Yeni İçerik Oluştur</Button>
+          <button className="px-8 py-3 bg-[#ffde59] text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300">
+            Yeni İçerik Oluştur
+          </button>
         </Link>
       </div>
     );
@@ -486,7 +480,7 @@ export default function ResultClient() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto py-8 px-4">
+    <div className="container max-w-6xl mx-auto py-16 px-4 bg-gray-50">
       {/* LinkedIn Paylaşım Modalı */}
       <Modal
         isOpen={isLinkedInShareModalOpen}
@@ -558,213 +552,179 @@ export default function ResultClient() {
         </div>
       </Modal>
 
-      <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold mb-1">İçerik Sonucu</h1>
-        <p className="text-muted-foreground">
+      <div className="text-center mb-8">
+        <span className="inline-block mb-4 px-3 py-1 border-2 border-black bg-[#ffde59] text-black font-bold text-sm">
+          İÇERİK SONUCU
+        </span>
+        <h1 className="text-4xl font-black mb-3 tracking-tight">
+          <span className="bg-black text-white px-2">İçerik</span> Sonucu
+        </h1>
+        <p className="text-lg max-w-2xl mx-auto text-gray-800 font-medium">
           {getPlatformName(platform)} için {getContentTypeName(contentType)}{" "}
-          içeriği
+          içeriği başarıyla oluşturuldu
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle>{result.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="pb-2">
-              <div className="flex justify-center mb-4">
-                {renderPlatformMockup()}
-              </div>
+          <div className="border-2 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] h-full relative">
+            {/* Neobrutalist circles */}
+            <div className="absolute -bottom-4 -right-4 w-8 h-8 rounded-full bg-[#ffde59] border-2 border-black z-10"></div>
+            <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-white border-2 border-black z-10"></div>
 
-              {platform === "twitter" &&
-                contentType === "thread" &&
-                threadContent &&
-                threadContent.tweets.length > 1 && (
-                  <div className="flex justify-center items-center gap-4 mt-4">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={prevTweet}
-                      disabled={currentTweet === 0}
-                      aria-label="Önceki tweet"
-                    >
-                      ← Önceki
-                    </Button>
-                    <span className="text-sm" aria-live="polite">
-                      {currentTweet + 1} / {threadContent.tweets.length}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={nextTweet}
-                      disabled={
-                        currentTweet === threadContent.tweets.length - 1
-                      }
-                      aria-label="Sonraki tweet"
-                    >
-                      Sonraki →
-                    </Button>
-                  </div>
-                )}
-            </CardContent>
+            <h2 className="text-2xl font-black mb-4 tracking-tight">
+              {result.title}
+            </h2>
+            <div className="flex justify-center mb-6 border-2 border-black p-4">
+              {renderPlatformMockup()}
+            </div>
+
+            {platform === "twitter" &&
+              contentType === "thread" &&
+              threadContent &&
+              threadContent.tweets.length > 1 && (
+                <div className="flex justify-center items-center gap-4 mt-6">
+                  <button
+                    onClick={prevTweet}
+                    disabled={currentTweet === 0}
+                    aria-label="Önceki tweet"
+                    className="px-4 py-2 border-2 border-black bg-white font-bold disabled:opacity-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] transition-transform duration-300"
+                  >
+                    ← Önceki
+                  </button>
+                  <span
+                    className="font-bold px-4 py-2 border-2 border-black"
+                    aria-live="polite"
+                  >
+                    {currentTweet + 1} / {threadContent.tweets.length}
+                  </span>
+                  <button
+                    onClick={nextTweet}
+                    disabled={currentTweet === threadContent.tweets.length - 1}
+                    aria-label="Sonraki tweet"
+                    className="px-4 py-2 border-2 border-black bg-white font-bold disabled:opacity-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] transition-transform duration-300"
+                  >
+                    Sonraki →
+                  </button>
+                </div>
+              )}
+
             {result.hashtags.length > 0 && (
-              <CardFooter className="flex flex-wrap gap-2 border-t pt-4">
+              <div className="flex flex-wrap gap-2 border-t-2 border-black pt-4 mt-4">
                 {result.hashtags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-2 py-1 bg-primary/10 text-primary rounded-md text-sm"
+                    className="px-2 py-1 border-2 border-black bg-[#ffde59] text-black font-bold text-sm"
                   >
                     {tag}
                   </span>
                 ))}
-              </CardFooter>
+              </div>
             )}
-          </Card>
+          </div>
         </div>
 
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">İçerik İpuçları</CardTitle>
-              <CardDescription>
+          <div className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+            <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-[#ffde59] border-2 border-black z-10"></div>
+            <div className="border-b-2 border-black p-4">
+              <h2 className="text-xl font-black">İçerik İpuçları</h2>
+              <p className="text-gray-800">
                 İçeriğinizi geliştirebilecek öneriler
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
+            </div>
+            <div className="p-4">
               {result.suggestions.length > 0 ? (
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   {result.suggestions.map((suggestion, idx) => (
                     <li key={idx} className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{suggestion}</span>
+                      <span className="text-black font-black">•</span>
+                      <span className="font-medium">{suggestion}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-muted-foreground text-sm">
+                <p className="text-gray-800 text-sm font-medium">
                   Bu içerik için herhangi bir öneri bulunmamaktadır.
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">İşlemler</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button
+          <div className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+            <div className="absolute -bottom-4 -left-4 w-8 h-8 rounded-full bg-white border-2 border-black z-10"></div>
+            <div className="border-b-2 border-black p-4">
+              <h2 className="text-xl font-black">İşlemler</h2>
+            </div>
+            <div className="p-4 space-y-3">
+              <button
                 onClick={shareToSocialMedia}
-                variant="default"
-                className="w-full justify-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary"
+                className="w-full py-3 bg-[#ffde59] text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300 flex items-center justify-center gap-2"
                 aria-label={`${getPlatformName(platform)}'da Paylaş`}
               >
                 {getPlatformIcon()}
                 {platform === "instagram"
                   ? "Instagram'da Paylaş (Kopyala)"
                   : `${getPlatformName(platform)}'da Paylaş`}
-              </Button>
+              </button>
 
-              <Button
+              <button
                 onClick={regenerateContent}
                 disabled={isRegeneratingContent || !result.title}
-                variant="outline"
-                className="w-full justify-center"
+                className="w-full py-3 bg-white text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
                 aria-label="İçeriği yeniden oluştur"
               >
                 {isRegeneratingContent ? (
                   <>
-                    <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
+                    <div className="h-4 w-4 border-t-2 border-r-2 border-black rounded-full animate-spin mr-2"></div>
                     İçerik Oluşturuluyor...
                   </>
                 ) : (
                   <>İçeriği Yeniden Oluştur</>
                 )}
-              </Button>
+              </button>
 
-              <Button
+              <button
                 onClick={regenerateImage}
                 disabled={isRegenerating || !result.title}
-                variant="outline"
-                className="w-full justify-center"
+                className="w-full py-3 bg-white text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
                 aria-label="Görseli yeniden oluştur"
               >
                 {isRegenerating ? (
                   <>
-                    <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
+                    <div className="h-4 w-4 border-t-2 border-r-2 border-black rounded-full animate-spin mr-2"></div>
                     Görsel Oluşturuluyor...
                   </>
                 ) : (
                   <>Görseli Yeniden Oluştur</>
                 )}
-              </Button>
+              </button>
 
               {result.imageUrl && result.imageUrl !== "/file.svg" && (
-                <Button
-                  variant="outline"
+                <button
                   onClick={downloadImage}
-                  className="w-full justify-center"
+                  className="w-full py-3 bg-white text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300 flex items-center justify-center"
                   aria-label="Görseli indir"
                 >
                   Görseli İndir
-                </Button>
+                </button>
               )}
 
-              <Button
-                variant="outline"
+              <button
                 onClick={copyTextToClipboard}
-                className="w-full justify-center"
+                className="w-full py-3 bg-white text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300 flex items-center justify-center"
                 aria-label="Metni kopyala"
               >
                 {isCopied ? "Kopyalandı ✓" : "Metni Kopyala"}
-              </Button>
+              </button>
 
-              <Link href="/wizard" className="w-full">
-                <Button className="w-full justify-center">
+              <Link href="/wizard" className="w-full block">
+                <button className="w-full py-3 bg-black text-white font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300 flex items-center justify-center">
                   Yeni İçerik Oluştur
-                </Button>
+                </button>
               </Link>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

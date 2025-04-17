@@ -73,16 +73,7 @@ export function InstagramMockup({
               {content.text}
             </div>
 
-            {/* Hashtags */}
-            {content.hashtags && content.hashtags.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                {content.hashtags.map((tag, idx) => (
-                  <span key={idx} className="text-white text-sm">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
+            {/* Hashtags - Removed for stories as per requirement */}
           </div>
         </div>
       </div>

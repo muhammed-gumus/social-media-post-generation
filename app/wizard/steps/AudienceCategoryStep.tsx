@@ -6,12 +6,12 @@ export default function AudienceCategoryStep() {
   const { state, setState } = useWizard();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div
-        className={`p-4 border rounded-lg cursor-pointer hover:border-primary transition-all ${
+        className={`p-4 border-2 relative cursor-pointer transition-all hover:translate-y-[-4px] ${
           state.selectedAudienceCategory === "demographic"
-            ? "border-primary bg-primary/10"
-            : ""
+            ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         }`}
         onClick={() =>
           setState((prev) => ({
@@ -20,16 +20,24 @@ export default function AudienceCategoryStep() {
           }))
         }
       >
-        <div className="font-medium">Demografi</div>
-        <div className="text-sm text-gray-500">
+        {state.selectedAudienceCategory === "demographic" && (
+          <div
+            className="absolute top-0 right-0 w-0 h-0 
+            border-t-[20px] border-t-black 
+            border-l-[20px] border-l-transparent"
+          ></div>
+        )}
+        <div className="font-bold">Demografi</div>
+        <div className="text-sm text-gray-700 mt-1">
           Yaş ve demografi bazlı hedef kitle
         </div>
       </div>
+
       <div
-        className={`p-4 border rounded-lg cursor-pointer hover:border-primary transition-all ${
+        className={`p-4 border-2 relative cursor-pointer transition-all hover:translate-y-[-4px] ${
           state.selectedAudienceCategory === "professional"
-            ? "border-primary bg-primary/10"
-            : ""
+            ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         }`}
         onClick={() =>
           setState((prev) => ({
@@ -38,16 +46,24 @@ export default function AudienceCategoryStep() {
           }))
         }
       >
-        <div className="font-medium">Profesyonel</div>
-        <div className="text-sm text-gray-500">
+        {state.selectedAudienceCategory === "professional" && (
+          <div
+            className="absolute top-0 right-0 w-0 h-0 
+            border-t-[20px] border-t-black 
+            border-l-[20px] border-l-transparent"
+          ></div>
+        )}
+        <div className="font-bold">Profesyonel</div>
+        <div className="text-sm text-gray-700 mt-1">
           Kariyer ve iş dünyası odaklı
         </div>
       </div>
+
       <div
-        className={`p-4 border rounded-lg cursor-pointer hover:border-primary transition-all ${
+        className={`p-4 border-2 relative cursor-pointer transition-all hover:translate-y-[-4px] ${
           state.selectedAudienceCategory === "interest"
-            ? "border-primary bg-primary/10"
-            : ""
+            ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         }`}
         onClick={() =>
           setState((prev) => ({
@@ -56,16 +72,24 @@ export default function AudienceCategoryStep() {
           }))
         }
       >
-        <div className="font-medium">İlgi Alanı</div>
-        <div className="text-sm text-gray-500">
+        {state.selectedAudienceCategory === "interest" && (
+          <div
+            className="absolute top-0 right-0 w-0 h-0 
+            border-t-[20px] border-t-black 
+            border-l-[20px] border-l-transparent"
+          ></div>
+        )}
+        <div className="font-bold">İlgi Alanı</div>
+        <div className="text-sm text-gray-700 mt-1">
           İlgi ve hobi bazlı hedef kitle
         </div>
       </div>
+
       <div
-        className={`p-4 border rounded-lg cursor-pointer hover:border-primary transition-all ${
+        className={`p-4 border-2 relative cursor-pointer transition-all hover:translate-y-[-4px] ${
           state.selectedAudienceCategory === "behavior"
-            ? "border-primary bg-primary/10"
-            : ""
+            ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         }`}
         onClick={() =>
           setState((prev) => ({
@@ -74,16 +98,24 @@ export default function AudienceCategoryStep() {
           }))
         }
       >
-        <div className="font-medium">Davranışsal</div>
-        <div className="text-sm text-gray-500">
+        {state.selectedAudienceCategory === "behavior" && (
+          <div
+            className="absolute top-0 right-0 w-0 h-0 
+            border-t-[20px] border-t-black 
+            border-l-[20px] border-l-transparent"
+          ></div>
+        )}
+        <div className="font-bold">Davranışsal</div>
+        <div className="text-sm text-gray-700 mt-1">
           Tüketici davranışlarına göre
         </div>
       </div>
+
       <div
-        className={`p-4 border rounded-lg cursor-pointer hover:border-primary transition-all ${
+        className={`p-4 border-2 relative cursor-pointer transition-all hover:translate-y-[-4px] ${
           state.selectedAudienceCategory === "geographic"
-            ? "border-primary bg-primary/10"
-            : ""
+            ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         }`}
         onClick={() =>
           setState((prev) => ({
@@ -92,8 +124,15 @@ export default function AudienceCategoryStep() {
           }))
         }
       >
-        <div className="font-medium">Coğrafi</div>
-        <div className="text-sm text-gray-500">Konum bazlı hedefleme</div>
+        {state.selectedAudienceCategory === "geographic" && (
+          <div
+            className="absolute top-0 right-0 w-0 h-0 
+            border-t-[20px] border-t-black 
+            border-l-[20px] border-l-transparent"
+          ></div>
+        )}
+        <div className="font-bold">Coğrafi</div>
+        <div className="text-sm text-gray-700 mt-1">Konum bazlı hedefleme</div>
       </div>
     </div>
   );

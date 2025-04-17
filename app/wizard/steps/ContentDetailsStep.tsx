@@ -141,15 +141,15 @@ export default function ContentDetailsStep() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <label htmlFor="description" className="block mb-2 font-medium">
+        <label htmlFor="description" className="block mb-3 font-bold">
           İçeriğinizi detaylı açıklayın:
         </label>
         <textarea
           id="description"
           rows={5}
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none"
           placeholder={getCustomPlaceholder()}
           value={state.contentDescription}
           onChange={(e) =>
@@ -163,80 +163,80 @@ export default function ContentDetailsStep() {
       </div>
 
       <div>
-        <label htmlFor="keywords" className="block mb-2 font-medium">
+        <label htmlFor="keywords" className="block mb-3 font-bold">
           Anahtar Kelimeler:
         </label>
         <input
           id="keywords"
           type="text"
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none"
           placeholder="Virgülle ayırarak anahtar kelimeleri girin (ör: yapay zeka, teknoloji, inovasyon)"
           value={state.contentKeywords}
           onChange={(e) =>
             setState((prev) => ({ ...prev, contentKeywords: e.target.value }))
           }
         />
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-700 font-medium">
           Anahtar kelimeler içeriğinizin odak noktalarını belirler ve hashtag
           önerilerini şekillendirir.
         </p>
       </div>
 
       {/* İçerik uzunluğu tercihi */}
-      <div className="space-y-4 border rounded-lg p-4">
-        <label className="block mb-2 font-medium">İçerik Uzunluğu</label>
-        <div className="flex flex-wrap gap-3">
+      <div className="border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
+        <label className="block mb-4 font-bold text-lg">İçerik Uzunluğu</label>
+        <div className="flex flex-wrap gap-4">
           <div
-            className={`p-3 border rounded-lg cursor-pointer ${
+            className={`p-4 border-2 cursor-pointer transition-all hover:translate-y-[-4px] ${
               state.contentLength === "short"
-                ? "border-primary bg-primary/10"
-                : ""
+                ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             }`}
             onClick={() =>
               setState((prev) => ({ ...prev, contentLength: "short" }))
             }
           >
-            <div className="font-medium">Kısa</div>
-            <div className="text-sm text-gray-500">Özlü ve kısa içerik</div>
+            <div className="font-bold">Kısa</div>
+            <div className="text-sm text-gray-700">Özlü ve kısa içerik</div>
           </div>
           <div
-            className={`p-3 border rounded-lg cursor-pointer ${
+            className={`p-4 border-2 cursor-pointer transition-all hover:translate-y-[-4px] ${
               state.contentLength === "medium"
-                ? "border-primary bg-primary/10"
-                : ""
+                ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             }`}
             onClick={() =>
               setState((prev) => ({ ...prev, contentLength: "medium" }))
             }
           >
-            <div className="font-medium">Orta</div>
-            <div className="text-sm text-gray-500">Dengeli uzunlukta</div>
+            <div className="font-bold">Orta</div>
+            <div className="text-sm text-gray-700">Dengeli uzunlukta</div>
           </div>
           <div
-            className={`p-3 border rounded-lg cursor-pointer ${
+            className={`p-4 border-2 cursor-pointer transition-all hover:translate-y-[-4px] ${
               state.contentLength === "long"
-                ? "border-primary bg-primary/10"
-                : ""
+                ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             }`}
             onClick={() =>
               setState((prev) => ({ ...prev, contentLength: "long" }))
             }
           >
-            <div className="font-medium">Uzun</div>
-            <div className="text-sm text-gray-500">Detaylı ve kapsamlı</div>
+            <div className="font-bold">Uzun</div>
+            <div className="text-sm text-gray-700">Detaylı ve kapsamlı</div>
           </div>
         </div>
       </div>
 
       {/* Platform özel seçenekler */}
       {state.selectedPlatform === "instagram" && (
-        <div className="space-y-4 border rounded-lg p-4">
-          <label htmlFor="instagramFilter" className="block mb-2 font-medium">
+        <div className="border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
+          <label htmlFor="instagramFilter" className="block mb-3 font-bold">
             Instagram Filtresi
           </label>
           <select
             id="instagramFilter"
-            className="w-full p-2 border rounded-md"
+            className="w-full p-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             value={state.instagramFilter}
             onChange={(e) =>
               setState((prev) => ({ ...prev, instagramFilter: e.target.value }))
@@ -249,20 +249,20 @@ export default function ContentDetailsStep() {
             <option value="lark">Lark</option>
             <option value="reyes">Reyes</option>
           </select>
-          <p className="text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-700 font-medium">
             Instagram görseliniz için tercih edilen filtre
           </p>
         </div>
       )}
 
       {state.selectedPlatform === "twitter" && (
-        <div className="space-y-4 border rounded-lg p-4">
-          <label htmlFor="twitterCharLimit" className="block mb-2 font-medium">
+        <div className="border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
+          <label htmlFor="twitterCharLimit" className="block mb-3 font-bold">
             Karakter Limiti
           </label>
           <select
             id="twitterCharLimit"
-            className="w-full p-2 border rounded-md"
+            className="w-full p-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             value={state.twitterCharLimit}
             onChange={(e) =>
               setState((prev) => ({
@@ -275,20 +275,20 @@ export default function ContentDetailsStep() {
             <option value="140">Kısa (140)</option>
             <option value="200">Orta (200)</option>
           </select>
-          <p className="text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-700 font-medium">
             Tweet başına maksimum karakter sayısı
           </p>
         </div>
       )}
 
       {state.selectedPlatform === "facebook" && (
-        <div className="space-y-4 border rounded-lg p-4">
-          <label htmlFor="facebookPrivacy" className="block mb-2 font-medium">
+        <div className="border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
+          <label htmlFor="facebookPrivacy" className="block mb-3 font-bold">
             Görünürlük
           </label>
           <select
             id="facebookPrivacy"
-            className="w-full p-2 border rounded-md"
+            className="w-full p-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             value={state.facebookPrivacy}
             onChange={(e) =>
               setState((prev) => ({ ...prev, facebookPrivacy: e.target.value }))
@@ -298,7 +298,7 @@ export default function ContentDetailsStep() {
             <option value="friends">Arkadaşlar</option>
             <option value="specific">Belirli Gruplar</option>
           </select>
-          <p className="text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-700 font-medium">
             İçeriğin Facebook üzerinde kimler tarafından görülebileceği
           </p>
         </div>
@@ -307,12 +307,12 @@ export default function ContentDetailsStep() {
       {/* Görsel tercihi */}
       {state.selectedContentType !== "textOnly" &&
         state.selectedContentType !== "thread" && (
-          <div className="space-y-4 border rounded-lg p-4">
-            <div className="flex items-center space-x-2">
+          <div className="border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
+            <div className="flex items-center space-x-3">
               <input
                 type="checkbox"
                 id="imageToggle"
-                className="w-4 h-4"
+                className="w-5 h-5 border-2 border-black"
                 checked={state.imageRequired}
                 onChange={(e) =>
                   setState((prev) => ({
@@ -321,18 +321,18 @@ export default function ContentDetailsStep() {
                   }))
                 }
               />
-              <label htmlFor="imageToggle" className="text-sm font-medium">
+              <label htmlFor="imageToggle" className="text-md font-bold">
                 Bu içerik için görsel oluşturulsun mu?
               </label>
             </div>
 
             {/* No text in images notice */}
             {state.imageRequired && (
-              <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded-md">
-                <p className="text-sm text-yellow-700 flex items-center">
+              <div className="mt-3 p-3 bg-[#ffde59] border-2 border-black">
+                <p className="text-sm text-black font-medium flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 mr-1"
+                    className="h-4 w-4 mr-2"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -350,7 +350,7 @@ export default function ContentDetailsStep() {
               </div>
             )}
 
-            <p className="text-sm text-gray-500 ml-6">
+            <p className="mt-3 text-sm text-gray-700 font-medium ml-8">
               {state.selectedPlatform === "instagram"
                 ? "Instagram'da görsel içerik önemlidir. Yüksek kaliteli ve ilgi çekici görseller etkileşimi artırır."
                 : state.selectedPlatform === "linkedin"
@@ -366,11 +366,12 @@ export default function ContentDetailsStep() {
 
       {/* Contextual tips based on previous selections */}
       {contextualTip && (
-        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="font-medium mb-2 flex items-center">
+        <div className="mt-4 p-5 border-2 border-black bg-white relative">
+          <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-[#ffde59] border-2 border-black z-10"></div>
+          <h3 className="font-bold text-lg mb-3 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2 text-blue-600"
+              className="h-5 w-5 mr-2 text-black"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -382,14 +383,15 @@ export default function ContentDetailsStep() {
             </svg>
             Kişiselleştirilmiş İpucu:
           </h3>
-          <p className="text-sm text-gray-700">{contextualTip}</p>
+          <p className="text-md text-gray-700 font-medium">{contextualTip}</p>
         </div>
       )}
 
       {/* İçerik türüne özel ipuçları */}
-      <div className="mt-4 p-4 bg-primary/5 rounded-lg">
-        <h3 className="font-medium mb-2">İçerik Türü İpuçları:</h3>
-        <p className="text-sm text-gray-600">
+      <div className="mt-4 p-5 border-2 border-black bg-[#ffde59]/20 relative">
+        <div className="absolute -bottom-4 -left-4 w-8 h-8 rounded-full bg-white border-2 border-black z-10"></div>
+        <h3 className="font-bold text-lg mb-3">İçerik Türü İpuçları:</h3>
+        <p className="text-md text-gray-700 font-medium whitespace-pre-line">
           {state.selectedContentType === "thread"
             ? "• Thread'ler için numaralandırma yapılacak (1/X formatında)\n• Her tweet 280 karakteri geçmeyecek\n• Konuyu mantıklı bir sırayla anlat\n• Son tweet'te özet veya çağrı ekle"
             : state.selectedContentType === "article"

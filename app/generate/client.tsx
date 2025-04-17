@@ -28,7 +28,6 @@ import {
 } from "@/lib/services/errorService";
 import { useGenerateParams } from "./generateParams";
 import { getTemplateById, ContentTemplate } from "@/lib/templateData";
-import { Progress } from "@/components/ui/progress";
 
 export default function GenerateClient() {
   const params = useGenerateParams();
@@ -377,23 +376,33 @@ export default function GenerateClient() {
   ]);
 
   return (
-    <div className="container max-w-6xl mx-auto py-16 px-4">
+    <div className="container max-w-6xl mx-auto py-16 px-4 bg-gray-50">
       {showTemplateForm ? (
         <div>
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-3">Şablonu Özelleştir</h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <span className="inline-block mb-4 px-3 py-1 border-2 border-black bg-[#ffde59] text-black font-bold text-sm">
+              ŞABLON ÖZELLEŞTİRME
+            </span>
+            <h1 className="text-4xl font-black mb-3 tracking-tight">
+              <span className="bg-black text-white px-2">Şablonu</span>{" "}
+              Özelleştir
+            </h1>
+            <p className="text-lg max-w-2xl mx-auto text-gray-800 font-medium">
               {templateDetails?.title} şablonu için gerekli bilgileri girin. Bu
               bilgiler içeriğinizin oluşturulmasında kullanılacaktır.
             </p>
           </div>
 
-          <div className="bg-background border rounded-xl p-8 shadow-sm">
+          <div className="bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+            {/* Neobrutalist circles */}
+            <div className="absolute -bottom-4 -right-4 w-8 h-8 rounded-full bg-[#ffde59] border-2 border-black z-10"></div>
+            <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-white border-2 border-black z-10"></div>
+
             <form onSubmit={handleSubmitTemplate} className="space-y-8">
               {/* Template Header Info */}
-              <div className="flex flex-col md:flex-row gap-6 pb-6 border-b">
+              <div className="flex flex-col md:flex-row gap-6 pb-6 border-b-2 border-black">
                 <div className="md:w-1/3">
-                  <div className="h-40 rounded-lg bg-gradient-to-r from-primary/30 to-blue-600/30 relative flex items-center justify-center overflow-hidden">
+                  <div className="h-40 border-2 border-black relative flex items-center justify-center overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                     {uploadedImage ? (
                       <Image
                         src={uploadedImage}
@@ -402,7 +411,7 @@ export default function GenerateClient() {
                         style={{ objectFit: "cover" }}
                       />
                     ) : (
-                      <div className="text-center p-4">
+                      <div className="text-center p-4 bg-gray-100">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="40"
@@ -413,12 +422,12 @@ export default function GenerateClient() {
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="mx-auto mb-2 text-primary"
+                          className="mx-auto mb-2 text-black"
                         >
                           <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
                           <circle cx="12" cy="13" r="3"></circle>
                         </svg>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-gray-800 font-bold">
                           Görsel önizlemesi
                         </p>
                       </div>
@@ -426,7 +435,7 @@ export default function GenerateClient() {
                   </div>
                   {imageRequired && (
                     <div className="mt-3">
-                      <label className="block text-sm font-medium mb-1 text-center bg-primary text-white py-2 rounded-md cursor-pointer hover:bg-primary/90 transition-colors">
+                      <label className="block text-sm font-bold mb-1 text-center bg-[#ffde59] text-black py-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer hover:translate-y-[-4px] transition-transform duration-300">
                         <span>Kendi Görselini Yükle</span>
                         <input
                           type="file"
@@ -435,7 +444,7 @@ export default function GenerateClient() {
                           onChange={handleImageUpload}
                         />
                       </label>
-                      <p className="text-xs text-center text-muted-foreground mt-1">
+                      <p className="text-xs text-center text-gray-800 mt-1">
                         Önerilen: PNG veya JPG, 1080×1080px
                       </p>
                     </div>
@@ -444,47 +453,47 @@ export default function GenerateClient() {
 
                 <div className="md:w-2/3 flex flex-col">
                   <div className="mb-4">
-                    <h2 className="text-xl font-bold mb-1">
+                    <h2 className="text-2xl font-black mb-2 tracking-tight">
                       {templateDetails?.title}
                     </h2>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <span className="bg-primary/10 text-primary px-2 py-1 rounded">
+                    <div className="flex items-center gap-2 text-sm text-black mb-2">
+                      <span className="border-2 border-black bg-[#ffde59] px-2 py-1">
                         {getPlatformName(platform)}
                       </span>
-                      <span className="bg-primary/10 text-primary px-2 py-1 rounded">
+                      <span className="border-2 border-black bg-[#ffde59] px-2 py-1">
                         {getContentTypeName(contentType)}
                       </span>
                       {templateDetails?.industry && (
-                        <span className="bg-primary/10 text-primary px-2 py-1 rounded">
+                        <span className="border-2 border-black bg-[#ffde59] px-2 py-1">
                           {templateDetails.industry}
                         </span>
                       )}
                     </div>
-                    <p className="text-muted-foreground">
+                    <p className="text-gray-800">
                       {templateDetails?.description}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <label className="block text-sm font-medium mb-1">
+                      <label className="block text-sm font-bold mb-1">
                         İçerik Tonu{" "}
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-gray-600">
                           (değiştirilemez)
                         </span>
                       </label>
-                      <div className="w-full p-2 border border-muted bg-muted/30 rounded-md text-muted-foreground">
+                      <div className="w-full p-2 border-2 border-black bg-gray-100">
                         {getToneName(tone)}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-1">
+                      <label className="block text-sm font-bold mb-1">
                         Platform{" "}
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-gray-600">
                           (değiştirilemez)
                         </span>
                       </label>
-                      <div className="w-full p-2 border border-muted bg-muted/30 rounded-md text-muted-foreground">
+                      <div className="w-full p-2 border-2 border-black bg-gray-100">
                         {getPlatformName(platform)}
                       </div>
                     </div>
@@ -494,12 +503,12 @@ export default function GenerateClient() {
 
               {/* Template Fields Section */}
               <div>
-                <h3 className="font-bold text-lg mb-4">İçerik Bilgileri</h3>
+                <h3 className="font-black text-xl mb-4">İçerik Bilgileri</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {Object.keys(templateInputs).map((field) => (
                     <div key={field} className="text-left">
                       <label
-                        className="block text-sm font-medium mb-1"
+                        className="block text-sm font-bold mb-1"
                         htmlFor={field}
                       >
                         {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -507,7 +516,7 @@ export default function GenerateClient() {
                       <input
                         type="text"
                         id={field}
-                        className="w-full p-3 border rounded-md"
+                        className="w-full p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                         value={templateInputs[field]}
                         onChange={(e) =>
                           setTemplateInputs((prev) => ({
@@ -527,17 +536,17 @@ export default function GenerateClient() {
 
               {/* Additional Details Section */}
               <div>
-                <h3 className="font-bold text-lg mb-4">Ek Detaylar</h3>
+                <h3 className="font-black text-xl mb-4">Ek Detaylar</h3>
                 <div className="text-left">
                   <label
-                    className="block text-sm font-medium mb-1"
+                    className="block text-sm font-bold mb-1"
                     htmlFor="additionalDescription"
                   >
                     Eklemek İstediğiniz Detaylar
                   </label>
                   <textarea
                     id="additionalDescription"
-                    className="w-full p-3 border rounded-md min-h-[100px]"
+                    className="w-full p-3 border-2 border-black min-h-[100px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     value={description}
                     onChange={(e) => setDescriptionText(e.target.value)}
                     placeholder="İçeriğinize eklemek istediğiniz ek bilgiler veya detaylar..."
@@ -551,13 +560,13 @@ export default function GenerateClient() {
                 platform === "facebook" ||
                 platform === "linkedin") && (
                 <div>
-                  <h3 className="font-bold text-lg mb-4">
+                  <h3 className="font-black text-xl mb-4">
                     Profil Bilgileri (İsteğe Bağlı)
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="text-left">
                       <label
-                        className="block text-sm font-medium mb-1"
+                        className="block text-sm font-bold mb-1"
                         htmlFor="username"
                       >
                         Kullanıcı Adı
@@ -565,7 +574,7 @@ export default function GenerateClient() {
                       <input
                         type="text"
                         id="username"
-                        className="w-full p-3 border rounded-md"
+                        className="w-full p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                         placeholder="Kullanıcı adınız"
                         defaultValue={username}
                       />
@@ -575,10 +584,10 @@ export default function GenerateClient() {
               )}
 
               {/* Submit Section */}
-              <div className="pt-6 border-t flex flex-wrap gap-4 justify-between items-center">
+              <div className="pt-6 border-t-2 border-black flex flex-wrap gap-4 justify-between items-center">
                 <Link
                   href="/templates"
-                  className="px-4 py-2 border border-muted-foreground rounded-full text-muted-foreground hover:bg-muted transition-colors"
+                  className="px-4 py-2 border-2 border-black text-black hover:translate-y-[-4px] transition-transform duration-300 font-bold"
                 >
                   Şablonlara Geri Dön
                 </Link>
@@ -587,11 +596,11 @@ export default function GenerateClient() {
                   <button
                     type="submit"
                     disabled={isGenerating}
-                    className="px-8 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 disabled:opacity-70 disabled:cursor-not-allowed flex items-center font-medium"
+                    className="px-8 py-3 bg-[#ffde59] text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center"
                   >
                     {isGenerating ? (
                       <>
-                        <div className="h-4 w-4 border-t-2 border-r-2 border-white rounded-full animate-spin mr-2"></div>
+                        <div className="h-4 w-4 border-t-2 border-r-2 border-black rounded-full animate-spin mr-2"></div>
                         İçerik Oluşturuluyor...
                       </>
                     ) : (
@@ -604,7 +613,7 @@ export default function GenerateClient() {
           </div>
 
           <div className="mt-6">
-            <div className="text-xs text-muted-foreground text-center">
+            <div className="text-sm text-gray-800 text-center border-2 border-black p-3 bg-gray-100 mt-8">
               <p>
                 İçerik üretilirken gelişmiş yapay zeka modelleri ve görsel
                 oluşturma teknolojisi kullanılmaktadır.
@@ -618,54 +627,88 @@ export default function GenerateClient() {
         </div>
       ) : (
         <div className="text-center max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8">İçerik Oluşturuluyor</h1>
-          <div className="p-8 bg-background border rounded-lg shadow-sm flex flex-col items-center">
+          <span className="inline-block mb-4 px-3 py-1 border-2 border-black bg-[#ffde59] text-black font-bold text-sm">
+            İÇERİK ÜRETİMİ
+          </span>
+          <h1 className="text-4xl font-black mb-8 tracking-tight">
+            <span className="bg-black text-white px-2">İçerik</span>{" "}
+            Oluşturuluyor
+          </h1>
+          <div className="p-8 bg-white border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center relative">
+            {/* Neobrutalist circles */}
+            <div className="absolute -bottom-4 -right-4 w-8 h-8 rounded-full bg-[#ffde59] border-2 border-black z-10"></div>
+            <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-white border-2 border-black z-10"></div>
+
             {error ? (
               <div className="text-red-500 mb-4">
-                <p className="text-lg font-medium">{error}</p>
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 border-2 border-red-500 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-red-500"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                  </svg>
+                </div>
+                <p className="text-xl font-black mb-2">{error}</p>
                 <Link
                   href="/wizard"
-                  className="mt-4 inline-block text-primary hover:underline"
+                  className="mt-4 inline-block bg-[#ffde59] hover:translate-y-[-4px] transition-transform duration-300 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-6 py-3 font-bold text-black"
                 >
                   Sihirbaza Geri Dön
                 </Link>
               </div>
             ) : isRedirecting ? (
               <>
-                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[#ffde59] border-2 border-black flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-black"></div>
                 </div>
-                <p className="text-lg font-medium mb-2">
+                <p className="text-xl font-black mb-2">
                   Sonuç sayfasına yönlendiriliyorsunuz...
                 </p>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-md text-gray-800 mb-6 font-medium">
                   Bu işlem biraz zaman alabilir, lütfen bekleyin...
                 </p>
               </>
             ) : (
               <>
-                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[#ffde59] border-2 border-black flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-black"></div>
                 </div>
                 <div className="mb-6">
                   <div className="mb-2">
-                    <span className="text-lg font-medium">{status}</span>
+                    <span className="text-xl font-black">{status}</span>
                   </div>
-                  <div className="max-w-md mx-auto">
-                    <Progress value={progress} className="h-2.5" />
+                  <div className="max-w-md mx-auto border-2 border-black p-2 bg-white">
+                    <div className="relative h-6 w-full bg-white">
+                      <div
+                        className="absolute h-full bg-[#ffde59]"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="mt-2 text-sm text-muted-foreground">
+                  <div className="mt-2 text-md font-bold text-black">
                     %{Math.round(progress)}
                   </div>
                 </div>
-                <div className="text-sm text-muted-foreground max-w-md text-center">
+                <div className="text-md text-gray-800 max-w-md text-center font-medium bg-gray-100 border-2 border-black p-3">
                   <p>
                     {getPlatformName(platform)} için{" "}
-                    {getContentTypeName(contentType)} oluşturuluyor...
+                    <strong>{getContentTypeName(contentType)}</strong>{" "}
+                    oluşturuluyor...
                   </p>
                   {audience && (
                     <p className="mt-1">
-                      Hedef kitle: {getAudienceName(audience)}
+                      Hedef kitle: <strong>{getAudienceName(audience)}</strong>
                     </p>
                   )}
                 </div>

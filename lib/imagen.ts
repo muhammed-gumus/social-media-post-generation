@@ -125,8 +125,6 @@ function getFormatDetails(platform: string, contentType: string): string {
     } else {
       return "1200x630 piksel boyutunda, Facebook gönderileri için optimize edilmiş.";
     }
-  } else if (platform === "tiktok") {
-    return "9:16 dikey formatta, tam ekran TikTok videosu için kapak görseli olarak kullanılabilecek şekilde.";
   }
   return "Standart web görseli formatında, paylaşıma uygun boyutlarda.";
 }
@@ -152,9 +150,6 @@ function getPlatformStyle(
       break;
     case "facebook":
       style = "samimi, ulaşılabilir ve etkileşimi teşvik eden";
-      break;
-    case "tiktok":
-      style = "canlı, enerjik ve dinamik";
       break;
     default:
       style = "profesyonel ve çekici";

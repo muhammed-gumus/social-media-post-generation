@@ -32,12 +32,19 @@ interface AIResponsePart {
  */
 export async function generateText(prompt: string): Promise<string> {
   try {
+    console.log(
+      "generateText fonksiyonu çağrıldı - Prompt uzunluğu:",
+      prompt.length
+    );
+
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 
     if (!apiKey) {
-      console.error("API anahtarı bulunamadı.");
+      console.error("API anahtarı bulunamadı. İçerik oluşturulamıyor.");
       return "API anahtarı eksik. İçerik üretilemedi.";
     }
+
+    console.log("API anahtarı bulundu, istek gönderiliyor...");
 
     const apiUrl =
       "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent";
@@ -62,6 +69,7 @@ export async function generateText(prompt: string): Promise<string> {
     };
 
     try {
+      console.log(`API isteği gönderiliyor: ${apiUrl}`);
       const response = await fetch(`${apiUrl}?key=${apiKey}`, {
         method: "POST",
         headers: {
@@ -70,31 +78,72 @@ export async function generateText(prompt: string): Promise<string> {
         body: JSON.stringify(requestBody),
       });
 
+      console.log("API yanıtı alındı, durum kodu:", response.status);
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error(
           `API isteği başarısız (${response.status}): ${errorText}`
         );
+
+        // Rate limit hatası kontrolü
+        if (response.status === 429) {
+          console.error("Rate limit aşıldı! Bir süre bekleyip tekrar deneyin.");
+          return "API rate limit aşıldı. Lütfen bir süre bekleyip tekrar deneyin.";
+        }
+
+        // Geçersiz API anahtarı kontrolü
+        if (
+          response.status === 400 ||
+          response.status === 401 ||
+          response.status === 403
+        ) {
+          console.error("Geçersiz API anahtarı veya yetkilendirme hatası!");
+          return "API yetkilendirme hatası. API anahtarınızı kontrol edin.";
+        }
+
         return "API çağrısı sırasında hata oluştu. İçerik üretilemedi.";
       }
 
       const data = await response.json();
+      console.log(
+        "API yanıt verisi formatı:",
+        data?.candidates?.length > 0 ? "Doğru format" : "Beklenmeyen format"
+      );
 
       if (data?.candidates?.[0]?.content?.parts) {
         const text = data.candidates[0].content.parts
           .map((part: AIResponsePart) => part.text || "")
           .join("");
+
+        console.log(
+          "Metin başarıyla oluşturuldu, karakter sayısı:",
+          text?.length || 0
+        );
         return text || "İçerik üretilemedi.";
       } else {
-        console.error("API yanıt formatı beklendiği gibi değil:", data);
+        console.error(
+          "API yanıt formatı beklendiği gibi değil:",
+          JSON.stringify(data).substring(0, 200) + "..."
+        );
         return "İçerik üretilemedi. API yanıt formatı beklenenden farklı.";
       }
     } catch (fetchError) {
       console.error("Fetch işlemi sırasında hata:", fetchError);
+
+      // Ağ hatası kontrolü
+      if (
+        fetchError instanceof TypeError &&
+        fetchError.message.includes("fetch")
+      ) {
+        console.error("Ağ bağlantısı hatası - API'ye ulaşılamıyor");
+        return "Ağ hatası. API'ye bağlanılamadı.";
+      }
+
       return "Bağlantı hatası. İçerik üretilemedi.";
     }
   } catch (error) {
-    console.error("API hatası:", error);
+    console.error("API genel hatası:", error);
     return "İçerik oluşturulamadı. Lütfen daha sonra tekrar deneyin.";
   }
 }
@@ -128,9 +177,15 @@ export async function generateSocialMediaText(
       contentType === "thread"
         ? "Thread formatında yaz. Her tweet'i '1/X:' formatında numaralandır. Her tweet 280 karakteri geçmemeli. Konuyu mantıklı bir sırayla anlat. Son tweet'te özet veya çağrı ekle."
         : contentType === "article"
-        ? "Makale formatında ve profesyonel bir dille yaz. Önemli noktaları vurgula."
+        ? "Makale formatında ve profesyonel bir dilde yaz. Önemli noktaları vurgula."
         : contentType === "guide"
         ? "Adım adım rehber formatında yaz. Her adımı numaralandır ve detaylı açıkla."
+        : ""
+    }
+
+    ${
+      platform === "instagram" && contentType === "story"
+        ? "Instagram hikayesi için çok kısa ve etkili bir metin hazırla. Maksimum 1-2 cümle kullan ve toplam 50 karakteri geçmesin. Hashtag kullanma."
         : ""
     }
 
@@ -141,6 +196,18 @@ export async function generateSocialMediaText(
         : ""
     }
     ${platform === "linkedin" ? "Profesyonel bir tonda" : ""}
+    ${
+      platform === "instagram"
+        ? contentType === "story"
+          ? "Olabildiğince kısa ve etkileyici, sadece en önemli mesajı içeren"
+          : "Görsel odaklı, duygusal ve ilham verici"
+        : ""
+    }
+    ${
+      platform === "facebook"
+        ? "Samimi ve sohbet tarzında, topluluğa hitap eden"
+        : ""
+    }
     
     ÖNEMLİ: İçeriği ${getLanguageName(language)} dilinde oluştur.
     İçeriği düz metin olarak formatla, kesinlikle Markdown formatı (*, #, -, >>, vb. işaretler) kullanma. Alt başlıklar gerekiyorsa, onları numaralandır veya büyük harflerle yaz, ama # sembolü kullanma.

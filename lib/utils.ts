@@ -21,8 +21,6 @@ export function getPlatformName(platform: string): string {
       return "LinkedIn";
     case "facebook":
       return "Facebook";
-    case "tiktok":
-      return "TikTok";
     default:
       return platform;
   }
@@ -172,12 +170,6 @@ function platformSpecificInstructions(
         return "Facebook için bir etkinlik tanıtımı içeriği oluştur. Etkinliğin zamanı, yeri ve detayları net olarak vurgulanmalı.";
       }
       return "Facebook için etkileşim alabilecek, samimi tonda bir içerik hazırla.";
-
-    case "tiktok":
-      if (contentType === "series") {
-        return "TikTok için bir seri içerik planı hazırla. Her bölüm kısa ve öz olmalı, konuyu parçalara böl.";
-      }
-      return "TikTok için kısa, dinamik ve ilgi çekici bir içerik hazırla.";
 
     default:
       return "Platform özelliklerine uygun, hedef kitleye yönelik içerik oluştur.";

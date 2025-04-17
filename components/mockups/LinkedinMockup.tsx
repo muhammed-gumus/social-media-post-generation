@@ -13,18 +13,33 @@ interface LinkedinMockupProps {
   profilePhotoUrl?: string;
 }
 
-export function LinkedinMockup({ content, contentType }: LinkedinMockupProps) {
+export function LinkedinMockup({ content, contentType, username = "İsim Soyisim", profilePhotoUrl }: LinkedinMockupProps) {
   const isArticle = contentType === "article";
 
   return (
     <div className="w-full max-w-md mx-auto bg-white border border-gray-200 rounded-lg overflow-hidden shadow">
       {/* Header */}
       <div className="p-4 flex">
-        <div className="h-12 w-12 rounded-full bg-gray-200 flex-shrink-0" />
+        {profilePhotoUrl ? (
+          <div className="h-12 w-12 rounded-full overflow-hidden flex-shrink-0">
+            <Image
+              src={profilePhotoUrl}
+              alt="Profil fotoğrafı"
+              className="w-full h-full object-cover"
+              width={48}
+              height={48}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = `https://i.pravatar.cc/150?u=${encodeURIComponent(username)}`;
+              }}
+            />
+          </div>
+        ) : (
+          <div className="h-12 w-12 rounded-full bg-gray-200 flex-shrink-0" />
+        )}
         <div className="ml-3">
-          <div className="font-semibold">İsim Soyisim</div>
+          <div className="font-semibold">{username}</div>
           <div className="text-gray-500 text-sm">
-            Unvan • 3. derece bağlantı
+            Profesyonel • 3. derece bağlantı
           </div>
           <div className="text-gray-400 text-xs">14s • 🌐</div>
         </div>

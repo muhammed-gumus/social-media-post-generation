@@ -8,7 +8,6 @@ const platforms = [
   { id: "twitter", name: "X (Twitter)", icon: "🐦" },
   { id: "linkedin", name: "LinkedIn", icon: "💼" },
   { id: "facebook", name: "Facebook", icon: "👍" },
-  { id: "tiktok", name: "TikTok", icon: "🎵" },
 ];
 
 // Languages data
@@ -37,16 +36,6 @@ const platformSpecificContentTypes = {
       name: "Hikaye",
       description: "24 saatlik dikey içerik (9:16 format)",
     },
-    {
-      id: "guide",
-      name: "Rehber",
-      description: "Eğitici ve bilgilendirici içerik serisi",
-    },
-    {
-      id: "carousel",
-      name: "Carousel",
-      description: "Çoklu görsel içerik (kaydırmalı)",
-    },
   ],
   twitter: [
     {
@@ -59,21 +48,7 @@ const platformSpecificContentTypes = {
       name: "Flood",
       description: "Birbiriyle bağlantılı tweet serisi (Thread)",
     },
-    {
-      id: "textOnly",
-      name: "Sadece Metin",
-      description: "Görselsiz, sade metin içeriği",
-    },
-    {
-      id: "poll",
-      name: "Anket",
-      description: "Kullanıcı oylaması içeren içerik",
-    },
-    {
-      id: "quote",
-      name: "Alıntı Tweet",
-      description: "Başka bir tweet'i alıntılayan içerik",
-    },
+  
   ],
   linkedin: [
     {
@@ -122,23 +97,6 @@ const platformSpecificContentTypes = {
       id: "album",
       name: "Fotoğraf Albümü",
       description: "Çoklu fotoğraf koleksiyonu",
-    },
-  ],
-  tiktok: [
-    {
-      id: "post",
-      name: "Post",
-      description: "Kısa ve etkili görsel içerik",
-    },
-    {
-      id: "story",
-      name: "Hikaye",
-      description: "24 saatlik geçici içerik",
-    },
-    {
-      id: "series",
-      name: "Seri İçerik",
-      description: "Bölümler halinde bilgi paylaşımı",
     },
   ],
 };
@@ -507,7 +465,7 @@ export const WizardContext = createContext<WizardContextValue | undefined>(
 // Provider component
 export function WizardProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<WizardState>(defaultWizardState);
-  const totalSteps = 10;
+  const totalSteps = 9; // Bir adım azaltıldı (PurposeStep kaldırıldı)
 
   // Navigation functions
   const nextStep = () => {
@@ -579,55 +537,15 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     }
 
     if (state.currentStep === 3 && nextStepNumber === 4) {
-      // After industry selection, suggest a purpose based on platform, content type, and industry
-      const suggestedPurpose = (() => {
-        // Content type-based purpose suggestions
-        if (
-          state.selectedContentType === "guide" ||
-          state.selectedContentType === "article"
-        ) {
-          return "education";
-        }
-        if (
-          state.selectedContentType === "post" &&
-          state.selectedPlatform === "linkedin"
-        ) {
-          return "thought_leadership";
-        }
-
-        // Industry-based purpose suggestions
-        if (state.selectedIndustry === "nonprofit") {
-          return "awareness";
-        }
-        if (
-          state.selectedIndustry === "retail" ||
-          state.selectedIndustry === "food"
-        ) {
-          return "conversion";
-        }
-        if (state.selectedIndustry === "entertainment") {
-          return "entertainment";
-        }
-
-        // Platform-based purpose suggestions (fallback)
-        return getRecommendedPurpose();
-      })();
-
-      setState((prevState) => ({
-        ...prevState,
-        selectedPurpose: suggestedPurpose,
-      }));
-    }
-
-    if (state.currentStep === 4 && nextStepNumber === 5) {
-      // After purpose selection, suggest appropriate audience category based on purpose and platform
+      // PurposeStep kaldırıldı - Doğrudan audience category'ye geçiş
+      // Suggest appropriate audience category based on platform
       const suggestedCategory = (() => {
         // Platform-specific audience categories
         if (state.selectedPlatform === "linkedin") {
           return "professional";
         }
 
-        // Purpose-specific audience categories
+        // Purpose-specific audience categories (using default purpose)
         if (state.selectedPurpose === "thought_leadership") {
           return "professional";
         }
@@ -664,12 +582,12 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       }));
     }
 
-    if (state.currentStep === 5 && nextStepNumber === 6) {
+    if (state.currentStep === 4 && nextStepNumber === 5) {
       // After audience category selection, audience options will be filtered
       // Logic is already handled by getAudienceOptions()
     }
 
-    if (state.currentStep === 6 && nextStepNumber === 7) {
+    if (state.currentStep === 5 && nextStepNumber === 6) {
       // After audience selection, suggest a tone based on all previous selections
       const suggestedTone = (() => {
         // Purpose-based tone suggestions (highest priority)
@@ -705,7 +623,6 @@ export function WizardProvider({ children }: { children: ReactNode }) {
 
         // Platform-based tone suggestions (lowest priority)
         if (state.selectedPlatform === "linkedin") return "professional";
-        if (state.selectedPlatform === "tiktok") return "humorous";
         if (state.selectedPlatform === "instagram") return "inspirational";
 
         return "friendly"; // Default
@@ -717,7 +634,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       }));
     }
 
-    if (state.currentStep === 7 && nextStepNumber === 8) {
+    if (state.currentStep === 6 && nextStepNumber === 7) {
       // After tone selection, pre-populate content details if needed
       // This could include setting default content length based on platform and content type
       const suggestedLength = (() => {
@@ -754,6 +671,13 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       currentStep: nextStepNumber,
       progress: (nextStepNumber / totalSteps) * 100,
     }));
+
+    // Smooth scroll to top after changing steps
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   };
 
   const prevStep = () => {
@@ -885,13 +809,12 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     if (state.selectedPlatform === "twitter") return "awareness";
     if (state.selectedPlatform === "linkedin") return "thought_leadership";
     if (state.selectedPlatform === "facebook") return "engagement";
-    if (state.selectedPlatform === "tiktok") return "entertainment";
     return "engagement";
   };
 
   const getRecommendedTone = () => {
     if (state.selectedPlatform === "linkedin") return "professional";
-    if (state.selectedPlatform === "tiktok") return "humorous";
+    if (state.selectedPlatform === "instagram") return "inspirational";
     if (state.selectedContentType === "guide") return "informative";
     if (state.selectedContentType === "article") return "authoritative";
     if (state.selectedContentType === "thread") return "storytelling";

@@ -17,13 +17,23 @@ interface TwitterMockupProps {
   profilePhotoUrl?: string;
 }
 
-export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
+export function TwitterMockup({
+  content,
+  contentType,
+  username,
+  profilePhotoUrl,
+}: TwitterMockupProps) {
   const isThread = contentType === "thread";
   const { profileInfo } = content;
 
-  // Extract username without @ if it exists
-  const displayUsername = profileInfo?.username || "Kullanıcı Adı";
-  const formattedUsername = profileInfo?.username
+  // Öncelikle doğrudan props olarak gelen username ve profilePhotoUrl değerlerini kullan
+  // Eğer bunlar yoksa content.profileInfo'daki değerleri kullan
+  const displayUsername = username || profileInfo?.username || "Kullanıcı Adı";
+  const formattedUsername = username
+    ? username.startsWith("@")
+      ? username
+      : `@${username}`
+    : profileInfo?.username
     ? profileInfo.username.startsWith("@")
       ? profileInfo.username
       : `@${profileInfo.username}`
@@ -36,10 +46,10 @@ export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
     <div className="w-full max-w-md mx-auto bg-white border border-gray-200 rounded-xl overflow-hidden shadow">
       {/* Header */}
       <div className="flex items-center p-4 border-b border-gray-100">
-        {profileInfo?.photoUrl ? (
+        {profilePhotoUrl || profileInfo?.photoUrl ? (
           <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0">
             <Image
-              src={profileInfo.photoUrl}
+              src={profilePhotoUrl || profileInfo?.photoUrl || ""}
               alt="Profil fotoğrafı"
               className="w-full h-full object-cover"
               width={40}
@@ -187,7 +197,7 @@ export function TwitterMockup({ content, contentType }: TwitterMockupProps) {
 
       {/* Date and Twitter info */}
       <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-100">
-        12:00 · Nisan 15, 2025 · Twitter for Web
+        12:00 · Nisan 17, 2025 · Twitter for Web
       </div>
     </div>
   );

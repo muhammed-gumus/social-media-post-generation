@@ -8,36 +8,48 @@ export default function AudienceStep() {
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {audienceOptions.map((audience) => (
           <div
             key={audience.id}
-            className={`p-4 border rounded-lg cursor-pointer hover:border-primary transition-all ${
+            className={`p-4 border-2 relative cursor-pointer transition-all hover:translate-y-[-4px] ${
               state.selectedAudience === audience.id
-                ? "border-primary bg-primary/10"
-                : ""
+                ? "border-black bg-[#ffde59] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                : "border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             }`}
             onClick={() =>
               setState((prev) => ({ ...prev, selectedAudience: audience.id }))
             }
           >
-            <div className="font-medium">{audience.name}</div>
-            <div className="text-sm text-gray-500">{audience.description}</div>
+            {state.selectedAudience === audience.id && (
+              <div
+                className="absolute top-0 right-0 w-0 h-0 
+                border-t-[20px] border-t-black 
+                border-l-[20px] border-l-transparent"
+              ></div>
+            )}
+            <div className="font-bold">{audience.name}</div>
+            <div className="text-sm text-gray-700 mt-1">
+              {audience.description}
+            </div>
           </div>
         ))}
       </div>
 
       {/* Additional audience details */}
-      <div className="mt-8 space-y-4 border p-4 rounded-lg">
-        <h3 className="font-medium">Hedef Kitle Detaylandırma (Opsiyonel)</h3>
+      <div className="mt-8 border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white relative">
+        <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-white border-2 border-black z-10"></div>
+        <h3 className="font-bold text-xl mb-4">
+          Hedef Kitle Detaylandırma (Opsiyonel)
+        </h3>
 
-        <div>
-          <label htmlFor="ageRange" className="block mb-2 text-sm font-medium">
+        <div className="mb-5">
+          <label htmlFor="ageRange" className="block mb-2 text-sm font-bold">
             Yaş Aralığı
           </label>
           <select
             id="ageRange"
-            className="w-full p-2 border rounded-md"
+            className="w-full p-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             value={state.targetAgeRange}
             onChange={(e) =>
               setState((prev) => ({ ...prev, targetAgeRange: e.target.value }))
@@ -55,13 +67,13 @@ export default function AudienceStep() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="gender" className="block mb-2 text-sm font-medium">
+        <div className="mb-5">
+          <label htmlFor="gender" className="block mb-2 text-sm font-bold">
             Cinsiyet
           </label>
           <select
             id="gender"
-            className="w-full p-2 border rounded-md"
+            className="w-full p-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             value={state.targetGender}
             onChange={(e) =>
               setState((prev) => ({ ...prev, targetGender: e.target.value }))
@@ -74,13 +86,13 @@ export default function AudienceStep() {
         </div>
 
         <div>
-          <label htmlFor="location" className="block mb-2 text-sm font-medium">
+          <label htmlFor="location" className="block mb-2 text-sm font-bold">
             Konum / Şehir
           </label>
           <input
             id="location"
             type="text"
-            className="w-full p-2 border rounded-md"
+            className="w-full p-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             placeholder="ör: İstanbul, Türkiye, Avrupa, vb."
             value={state.targetLocation}
             onChange={(e) =>

@@ -13,16 +13,40 @@ interface FacebookMockupProps {
   profilePhotoUrl?: string;
 }
 
-export function FacebookMockup({ content, contentType }: FacebookMockupProps) {
+export function FacebookMockup({
+  content,
+  contentType,
+  username = "Kullanıcı Adı",
+  profilePhotoUrl,
+}: FacebookMockupProps) {
   return (
     <div className="w-full max-w-md mx-auto bg-white border border-gray-200 rounded-lg overflow-hidden shadow">
       {/* Header */}
       <div className="p-4 flex items-center">
-        <div className="h-10 w-10 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-white font-bold">
-          K
-        </div>
+        {profilePhotoUrl ? (
+          <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0">
+            <Image
+              src={profilePhotoUrl}
+              alt="Profil fotoğrafı"
+              className="w-full h-full object-cover"
+              width={40}
+              height={40}
+              onError={(e) => {
+                (
+                  e.target as HTMLImageElement
+                ).src = `https://i.pravatar.cc/150?u=${encodeURIComponent(
+                  username
+                )}`;
+              }}
+            />
+          </div>
+        ) : (
+          <div className="h-10 w-10 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-white font-bold">
+            {username ? username.charAt(0).toUpperCase() : "K"}
+          </div>
+        )}
         <div className="ml-3">
-          <div className="font-semibold">Kullanıcı Adı</div>
+          <div className="font-semibold">{username}</div>
           <div className="text-gray-500 text-xs flex items-center">
             <span>3s</span>
             <span className="mx-1">•</span>

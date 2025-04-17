@@ -31,11 +31,17 @@ const apiRequestManager = {
         try {
           await this.delayIfNeeded();
           this.requestsInProgress++;
+          console.log("API isteği başlatılıyor...");
           const result = await requestFn();
+          console.log(
+            "API isteği tamamlandı:",
+            result ? "Başarılı" : "Başarısız"
+          );
           this.lastTextRequestTime = Date.now();
           resolve(result);
           return result;
         } catch (error) {
+          console.error("API isteği sırasında hata oluştu:", error);
           reject(error);
           throw error;
         } finally {
@@ -188,6 +194,22 @@ export async function generateContent(
   } = params;
 
   try {
+    console.log("İçerik oluşturma başladı - Parametreler:", {
+      platform,
+      contentType,
+      audience,
+      description: description.substring(0, 30) + "...",
+      language,
+    });
+
+    // API anahtarını kontrol et
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+    console.log("API anahtarı mevcut:", apiKey ? "Evet" : "Hayır");
+
+    if (!apiKey) {
+      throw new Error("API anahtarı bulunamadı. İçerik oluşturulamıyor.");
+    }
+
     // Step 1: Generate text content - İstekleri sıralı şekilde yaparak aşırı yüklemeyi önlüyoruz
     if (progressCallback) progressCallback("AI modeli hazırlanıyor...", 15);
     await new Promise((resolve) => setTimeout(resolve, 800)); // UI güncellemesi için bekle
@@ -198,6 +220,7 @@ export async function generateContent(
     if (progressCallback) progressCallback("Metin içeriği üretiliyor...", 35);
 
     // İstekleri paralel olarak başlat fakat düzgün sıraya koyarak
+    console.log("Metin içeriği oluşturma isteği başlatılıyor...");
     const textPromise = apiRequestManager.enqueue(() =>
       generateSocialMediaText(
         platform,
@@ -208,14 +231,17 @@ export async function generateContent(
       )
     );
 
+    console.log("Başlık oluşturma isteği başlatılıyor...");
     const titlePromise = apiRequestManager.enqueue(() =>
       generateSocialMediaTitle(platform, contentType, description)
     );
 
+    console.log("Hashtag oluşturma isteği başlatılıyor...");
     const hashtagsPromise = apiRequestManager.enqueue(() =>
       generateSocialMediaHashtags(platform, description)
     );
 
+    console.log("İçerik önerileri isteği başlatılıyor...");
     const suggestionsPromise = apiRequestManager.enqueue(() =>
       generateContentSuggestions(platform)
     );
@@ -224,6 +250,10 @@ export async function generateContent(
     let text;
     try {
       text = await textPromise;
+      console.log(
+        "Metin içeriği başarıyla oluşturuldu:",
+        text ? "Başarılı" : "Başarısız"
+      );
       if (progressCallback) progressCallback("İçerik oluşturuluyor...", 45);
     } catch (error) {
       console.error("Metin oluşturma hatası:", error);
@@ -233,6 +263,7 @@ export async function generateContent(
     let title;
     try {
       title = await titlePromise;
+      console.log("Başlık başarıyla oluşturuldu:", title);
       if (progressCallback) progressCallback("Başlık oluşturuluyor...", 55);
     } catch (error) {
       console.error("Başlık oluşturma hatası:", error);
@@ -242,6 +273,7 @@ export async function generateContent(
     let hashtags;
     try {
       hashtags = await hashtagsPromise;
+      console.log("Hashtag'ler başarıyla oluşturuldu:", hashtags);
       if (progressCallback)
         progressCallback("Hashtag'ler oluşturuluyor...", 65);
     } catch (error) {
@@ -252,6 +284,7 @@ export async function generateContent(
     let suggestions;
     try {
       suggestions = await suggestionsPromise;
+      console.log("Öneriler başarıyla oluşturuldu:", suggestions);
       if (progressCallback) progressCallback("Öneriler hazırlanıyor...", 75);
     } catch (error) {
       console.error("Öneri oluşturma hatası:", error);
@@ -276,6 +309,7 @@ export async function generateContent(
     // Eğer kullanıcı bir görsel yüklediyse, doğrudan o görseli kullan
     if (uploadedImage) {
       imageUrl = uploadedImage;
+      console.log("Kullanıcının yüklediği görsel kullanılıyor");
       if (progressCallback)
         progressCallback("Yüklenen görsel kullanılıyor...", 85);
     }
@@ -283,6 +317,7 @@ export async function generateContent(
     else if (imageRequired) {
       if (progressCallback) progressCallback("Görsel üretiliyor...", 85);
       try {
+        console.log("Görsel oluşturma isteği başlatılıyor...");
         // Görsel isteğini kuyruğa ekle ve ön sıraya al (forceGeneration=true)
         imageUrl = await generateSocialMediaImage(
           platform,
@@ -291,6 +326,7 @@ export async function generateContent(
           industry,
           true // Force generation - ilk içerik üretiminde rate limit olsa bile atlayıp görsel oluştur
         );
+        console.log("Görsel URL:", imageUrl);
 
         // Hala varsayılan görsel dönerse, bir kez daha deneme yap
         if (imageUrl === "/file.svg") {
@@ -353,6 +389,8 @@ export async function generateContent(
     // Final progress update
     if (progressCallback) progressCallback("İçerik hazır!", 100);
 
+    console.log("İçerik oluşturma tamamlandı!");
+
     // Return the final content result
     return {
       title,
@@ -363,7 +401,7 @@ export async function generateContent(
       metaData,
     };
   } catch (error) {
-    console.error("Content generation error:", error);
+    console.error("İçerik oluşturma hatası (en üst seviye):", error);
     throw new Error(
       "İçerik üretimi sırasında bir hata oluştu. Lütfen tekrar deneyin."
     );
@@ -375,9 +413,10 @@ export async function generateContent(
  */
 export function saveContentResult(content: ContentResult): void {
   try {
+    console.log("İçerik sonuçları localStorage'a kaydediliyor");
     localStorage.setItem("contentResult", JSON.stringify(content));
   } catch (error) {
-    console.error("Content saving error:", error);
+    console.error("İçerik kaydetme hatası:", error);
   }
 }
 
@@ -389,7 +428,7 @@ export function getStoredContentResult(): ContentResult | null {
     const stored = localStorage.getItem("contentResult");
     return stored ? JSON.parse(stored) : null;
   } catch (error) {
-    console.error("Error retrieving stored content:", error);
+    console.error("Kayıtlı içerik alınırken hata:", error);
     return null;
   }
 }
