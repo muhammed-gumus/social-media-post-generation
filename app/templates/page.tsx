@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function TemplatesPage() {
   const [showTutorial, setShowTutorial] = useState(true);
@@ -76,13 +77,14 @@ export default function TemplatesPage() {
                 </p>
               </div>
 
-              <div className="relative pb-[56.25%] h-0 overflow-hidden border-b-2 border-black">
-                <img
+                <div className="relative pb-[56.25%] h-0 overflow-hidden border-b-2 border-black">
+                <Image
                   className="absolute top-0 left-0 w-full h-full object-cover"
                   src="/template-banner.png"
                   alt="İçerik şablonları tanıtımı"
+                  fill
                 />
-              </div>
+                </div>
 
               <div className="px-6 py-4 bg-gray-50">
                 <div className="flex flex-col sm:flex-row items-center justify-between">

@@ -90,7 +90,7 @@ export default function TwitterInsightsPage() {
                     </div>
                     <p className="text-sm text-gray-700">
                       Kullanmaya başlamak için Twitter kullanıcı adınızı girin
-                      ve "Analiz Et" butonuna tıklayın.
+                      ve &quot;Analiz Et&quot; butonuna tıklayın.
                     </p>
                   </div>
                   <button className="px-4 py-2 bg-[#ffde59] text-black font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300">
