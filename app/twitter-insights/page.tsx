@@ -8,7 +8,6 @@ import {
   LineChart,
   Megaphone,
   Play,
-  Twitter,
   Video,
   X
 } from "lucide-react";
@@ -24,8 +23,8 @@ export default function TwitterInsightsPage() {
         <div className="text-center mb-12">
           <div className="inline-block p-2 px-4 bg-[#ffde59] text-black rounded-none mb-4 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <span className="flex items-center gap-2 font-bold">
-              <Twitter size={16} />
-              Analiz
+            <Megaphone size={20} />
+            Çok Yakında...
             </span>
           </div>
           <div>
@@ -44,18 +43,18 @@ export default function TwitterInsightsPage() {
         {showTutorial && (
           <div className="max-w-4xl mx-auto mb-12">
             <div className="rounded-none border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-              <div className="p-5 bg-white border-b-2 border-black">
+                <div className="p-5 bg-white border-b-2 border-black">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold text-black flex items-center gap-2">
-                    <Video className="h-6 w-6" />
-                    Twitter İçerik Analizi Tanıtımı
+                  <h3 className="text-xl font-bold text-black flex items-start gap-2">
+                  <Video className="h-6 w-6" />
+                  Twitter İçerik Analizi Nasıl Çalışır?
                   </h3>
                   <button
-                    onClick={() => setShowTutorial(false)}
-                    className="text-gray-600 cursor-pointer hover:text-black focus:outline-none"
-                    aria-label="Tanıtımı kapat"
+                  onClick={() => setShowTutorial(false)}
+                  className="text-gray-600 cursor-pointer hover:text-black focus:outline-none"
+                  aria-label="Tanıtımı kapat"
                   >
-                    <X className="h-5 w-5" />
+                  <X className="h-5 w-5" />
                   </button>
                 </div>
                 <p className="text-gray-700 mb-0">
@@ -65,7 +64,7 @@ export default function TwitterInsightsPage() {
                   edebileceğinizi ve içerik stratejinizi nasıl
                   geliştirebileceğinizi göstermektedir.
                 </p>
-              </div>
+                </div>
 
               <div className="relative pb-[56.25%] h-0 overflow-hidden border-b-2 border-black">
                 <video

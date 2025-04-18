@@ -7,13 +7,13 @@ import {
   CheckCircle,
   FileText,
   Info,
-  LayoutTemplate,
   Mail,
-  Megaphone
+  Megaphone,
+  X
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/image";
 
 export default function TemplatesPage() {
   const [showTutorial, setShowTutorial] = useState(true);
@@ -24,8 +24,8 @@ export default function TemplatesPage() {
         <div className="text-center mb-12">
           <div className="inline-block p-2 px-4 bg-[#ffde59] text-black rounded-none mb-4 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <span className="flex items-center gap-2 font-bold">
-              <LayoutTemplate size={16} />
-              Şablonlar
+              <Megaphone size={20} />
+              Çok Yakında...
             </span>
           </div>
           <div>
@@ -44,30 +44,18 @@ export default function TemplatesPage() {
         {showTutorial && (
           <div className="max-w-4xl mx-auto mb-12">
             <div className="rounded-none border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-              <div className="p-5 bg-white border-b-2 border-black">
+                <div className="p-5 bg-white border-b-2 border-black">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold text-black flex items-center gap-2">
-                    <CameraIcon className="h-6 w-6" />
-                    İçerik Şablonları Tanıtımı
+                  <h3 className="text-xl font-bold text-black flex items-start gap-2">
+                  <CameraIcon className="h-6 w-6" />
+                  Hazır Şablonlar Rehberi
                   </h3>
                   <button
-                    onClick={() => setShowTutorial(false)}
-                    className="text-gray-600 cursor-pointer hover:text-black focus:outline-none"
-                    aria-label="Tanıtımı kapat"
+                  onClick={() => setShowTutorial(false)}
+                  className="text-gray-600 cursor-pointer hover:text-black focus:outline-none"
+                  aria-label="Tanıtımı kapat"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
+                  <X className="h-5 w-5" />
                   </button>
                 </div>
                 <p className="text-gray-700 mb-0">
@@ -75,7 +63,7 @@ export default function TemplatesPage() {
                   Bu görsel, şablonları nasıl kullanabileceğinizi ve
                   içeriklerinizi nasıl geliştirebileceğinizi göstermektedir.
                 </p>
-              </div>
+                </div>
 
                 <div className="relative pb-[56.25%] h-0 overflow-hidden border-b-2 border-black">
                 <Image
