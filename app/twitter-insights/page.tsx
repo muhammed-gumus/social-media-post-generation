@@ -9,7 +9,7 @@ import {
   Megaphone,
   Play,
   Video,
-  X
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,12 +19,12 @@ export default function TwitterInsightsPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-16 bg-gray-50">
-      <div className="w-full max-w-5xl">
+      <div className="w-full max-w-5xl px-4 sm:px-6">
         <div className="text-center mb-12">
           <div className="inline-block p-2 px-4 bg-[#ffde59] text-black rounded-none mb-4 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <span className="flex items-center gap-2 font-bold">
-            <Megaphone size={20} />
-            Çok Yakında...
+              <Megaphone size={20} />
+              Çok Yakında...
             </span>
           </div>
           <div>
@@ -43,18 +43,18 @@ export default function TwitterInsightsPage() {
         {showTutorial && (
           <div className="max-w-4xl mx-auto mb-12">
             <div className="rounded-none border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-                <div className="p-5 bg-white border-b-2 border-black">
+              <div className="p-5 bg-white border-b-2 border-black">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-xl font-bold text-black flex items-start gap-2">
-                  <Video className="h-6 w-6" />
-                  Twitter İçerik Analizi Nasıl Çalışır?
+                    <Video className="h-6 w-6" />
+                    Twitter İçerik Analizi Nasıl Çalışır?
                   </h3>
                   <button
-                  onClick={() => setShowTutorial(false)}
-                  className="text-gray-600 cursor-pointer hover:text-black focus:outline-none"
-                  aria-label="Tanıtımı kapat"
+                    onClick={() => setShowTutorial(false)}
+                    className="text-gray-600 cursor-pointer hover:text-black focus:outline-none"
+                    aria-label="Tanıtımı kapat"
                   >
-                  <X className="h-5 w-5" />
+                    <X className="h-5 w-5" />
                   </button>
                 </div>
                 <p className="text-gray-700 mb-0">
@@ -64,7 +64,7 @@ export default function TwitterInsightsPage() {
                   edebileceğinizi ve içerik stratejinizi nasıl
                   geliştirebileceğinizi göstermektedir.
                 </p>
-                </div>
+              </div>
 
               <div className="relative pb-[56.25%] h-0 overflow-hidden border-b-2 border-black">
                 <video
@@ -123,6 +123,16 @@ export default function TwitterInsightsPage() {
               Tweet&apos;lerinizin aldığı beğeni, retweet ve yanıtları analiz
               ederek en iyi performans gösteren içerikleri keşfedin.
             </p>
+            <ul className="space-y-2">
+              <li className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="h-4 w-4 rounded-full bg-black"></div>
+                En çok etkileşim alan içerikler
+              </li>rut
+              <li className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="h-4 w-4 rounded-full bg-black"></div>
+                En iyi performans gösteren zamanlar
+              </li>
+            </ul>
           </div>
 
           <div className="border-2 border-black p-6 bg-white hover:translate-y-[-8px] transition-transform duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -134,6 +144,16 @@ export default function TwitterInsightsPage() {
               Takipçilerinizin demografik özelliklerini ve ilgi alanlarını
               öğrenerek hedef kitlenizi daha iyi tanıyın.
             </p>
+            <ul className="space-y-2">
+              <li className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="h-4 w-4 rounded-full bg-black"></div>
+                Demografik analiz
+              </li>
+              <li className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="h-4 w-4 rounded-full bg-black"></div>
+                İlgi alanları ve tercihler
+              </li>
+            </ul>
           </div>
 
           <div className="border-2 border-black p-6 bg-white hover:translate-y-[-8px] transition-transform duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -145,6 +165,16 @@ export default function TwitterInsightsPage() {
               Yapay zeka destekli içerik önerileri ile etkileşiminizi artıracak
               tweet fikirleri ve stratejileri oluşturun.
             </p>
+            <ul className="space-y-2">
+              <li className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="h-4 w-4 rounded-full bg-black"></div>
+                AI destekli içerik önerileri
+              </li>
+              <li className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="h-4 w-4 rounded-full bg-black"></div>
+                İçerik takvimi oluşturma
+              </li>
+            </ul>
           </div>
         </div>
 

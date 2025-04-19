@@ -9,6 +9,7 @@ import {
   LayoutTemplate,
   Twitter,
   ArrowRight,
+  LogIn,
 } from "lucide-react";
 
 export function Header() {
@@ -42,7 +43,9 @@ export function Header() {
   // Close menu when pressing Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMenuOpen(false);
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+      }
     };
 
     window.addEventListener("keydown", handleEscape);
@@ -101,12 +104,13 @@ export function Header() {
               </Link>
             </nav>
 
-            {/* Call to Action Button */}
+            {/* Auth Button - Direct link to login page */}
             <Link
-              href="/wizard"
-              className="bg-white text-black font-bold text-base px-6 py-0.5 border-2 border-black flex items-center shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-shadow"
+              href="/auth/login"
+              className="bg-white text-black font-bold text-base px-2 py-1 border-2 border-black flex items-center shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-shadow"
             >
-              <span>Başla</span>
+              <span>Giriş / Kayıt</span>
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
 
@@ -179,21 +183,13 @@ export function Header() {
 
             <div className="mt-auto pt-10">
               <Link
-                href="/wizard"
-                className="flex items-center justify-between px-4 bg-white text-black font-bold text-xl py-4 w-full border-2 border-black shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1"
+                href="/auth/login"
+                className="flex items-center justify-between px-4 bg-white text-black font-bold text-xl py-3 w-full border-2 border-black shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span>Hemen Başla</span>
-                <ArrowRight className="w-5 h-5" />
+                <span>Giriş / Kayıt</span>
+                <LogIn className="w-5 h-5" />
               </Link>
-
-              {/* <button
-                onClick={() => setIsMenuOpen(false)}
-                className="mt-6 py-3 w-full text-center font-bold text-lg flex items-center justify-center border-2 border-black bg-white shadow-[4px_4px_0px_#000] hover:shadow-[2px_2px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1"
-              >
-                <X size={18} className="mr-2" />
-                <span>Kapat</span>
-              </button> */}
             </div>
           </nav>
         </div>

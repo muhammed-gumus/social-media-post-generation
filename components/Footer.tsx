@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   Instagram,
-  Twitter,
   Linkedin,
   Facebook,
   ArrowRight,
@@ -87,20 +86,33 @@ export function Footer() {
           <div className="md:col-span-4">
             <h4 className="font-bold mb-5 text-lg">Bizi Takip Edin</h4>
             <div className="grid grid-cols-2 gap-4">
-              <Link
-                href="#"
+                <Link
+                href="https://www.instagram.com/socreateapp/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white text-black border-2 border-black p-3 flex items-center gap-3 shadow-[3px_3px_0px_#000] hover:shadow-[1px_1px_0px_#000] hover:translate-x-1 hover:translate-y-1 transition-all"
-              >
+                >
                 <Instagram size={20} />
                 <span className="font-medium">Instagram</span>
-              </Link>
-              <Link
-                href="#"
+                </Link>
+                <Link
+                href="https://x.com/socreateapp"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white text-black border-2 border-black p-3 flex items-center gap-3 shadow-[3px_3px_0px_#000] hover:shadow-[1px_1px_0px_#000] hover:translate-x-1 hover:translate-y-1 transition-all"
-              >
-                <Twitter size={20} />
-                <span className="font-medium">Twitter</span>
-              </Link>
+                >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 30 30"
+                >
+                  <path d="M26.37,26l-8.795-12.822l0.015,0.012L25.52,4h-2.65l-6.46,7.48L11.28,4H4.33l8.211,11.971L12.54,15.97L3.88,26h2.65 l7.182-8.322L19.42,26H26.37z M10.23,6l12.34,18h-2.1L8.12,6H10.23z"></path>
+                </svg>
+                <span className="font-medium">Twitter(X)</span>
+                </Link>
               <Link
                 href="#"
                 className="bg-white text-black border-2 border-black p-3 flex items-center gap-3 shadow-[3px_3px_0px_#000] hover:shadow-[1px_1px_0px_#000] hover:translate-x-1 hover:translate-y-1 transition-all"
